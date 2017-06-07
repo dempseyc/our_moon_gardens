@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <link href= "/css/reset.css" rel= "stylesheet" type= "text/css">
+  </head>
+  <body>
+    <div class= "main-container">
+
+        {{^logged_in}}
+        <div class= "form">
+          <form action= "/signup" method= "post">
+            <fieldset>
+              <legend>New User</legend>
+              <form>
+                <label for= "inputEmail">Email</label>
+                  <input name= "email" type= "text" id= "inputEmail" placeholder= "Email">
+                <label for= "inputHandle">Handle</label>
+                  <input name= "handle" type= "text" id= "inputHandle" placeholder= "Handle">
+                <label for= "inputPassword">Password</label>
+                  <input name= "password" type= "password" id= "inputPassword" placeholder= "password">
+                <label for= "nameGarden">Garden Name</label>
+                  <input name= "garden-name" type= "text" id= "inputGardenName" placeholder= "MyMoonGaardenOne">
+                <button type= "submit">Create User</button>
+              </form>
+            </fieldset>
+          </form>
+        </div>
+        {{/logged_in}}
+
+        <!-- already logged in -->
+        {{#logged_in}}
+        <p>You are already logged in, {{handle}}..</p>
+        <a href= "/garden/{{garden_id}}"></a>
+        {{/logged_in}}
+
+    </div>
+  </body>
+</html>
+
+

@@ -1,0 +1,160 @@
+html, body{
+    color: #ACA;
+    background-color: #336;
+    position: static;
+    overflow: 'hidden',
+    height: '100%'
+    font-style: serif;
+}
+/* based on *//*Reuben Godeau's Scrollbars*//*http://codepen.io/RG/pen/yqvmL*/
+/*internet explorer scrollbalken*/
+body{
+  scrollbar-base-color: #99C;
+  scrollbar-3dlight-color: #99C;
+  scrollbar-highlight-color: #99C;
+  scrollbar-track-color: #77E;
+  scrollbar-arrow-color: #006;
+  scrollbar-shadow-color: #99C;
+  scrollbar-dark-shadow-color: #99C;
+}
+/*mozilla scrolbalken*/
+@-moz-document url-prefix(http://),url-prefix(https://) {
+  scrollbar {
+     -moz-appearance: none !important;
+     background: rgb(0,255,0) !important;
+  }
+  thumb,scrollbarbutton {
+     -moz-appearance: none !important;
+     background-color: rgb(0,0,255) !important;
+  }
+
+  thumb:hover,scrollbarbutton:hover {
+     -moz-appearance: none !important;
+     background-color: rgb(255,0,0) !important;
+  }
+
+  scrollbarbutton {
+     display: none !important;
+  }
+
+  scrollbar[orient="vertical"] {
+    min-width: 15px !important;
+  }
+}
+/**/
+.scrollbar-container {
+    width: 70%;
+    position: absolute;
+    top: 5%; bottom: 0; left: 0; right: 0;
+    margin: 20px;
+    border: 4px solid rgba(0, 0, 0, 0.2);
+    overflow: auto;
+    background-color: #66E;
+}
+.scrollbar-container .inner {
+    background-color: #99F;
+    height: 1200px;
+    width: 2000px;
+}
+::-webkit-scrollbar {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border: solid whiteSmoke 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+#held-item {
+  position: absolute;
+  pointer-events: none;
+}
+
+.garden-item {
+  pointer-events: none;
+}
+
+.block {
+  position: absolute;
+  height: 10px;
+  width: 10px;
+  font-size: 8px;
+  text-align: center;
+  vertical-align: center;
+}
+
+nav {
+  width: 100%;
+  position: fixed;
+  top: 5px; right: 30px;
+}
+
+nav span {
+  font-size: 1.4em;
+  font-style: italic;
+}
+
+nav ul li {
+  display: inline;
+  float: right;
+  padding: 0 10px 0 10px;
+}
+
+.clearfix {
+
+}
+
+.item-container {
+    width: 20%;
+    position: absolute;
+    top: 5%; bottom: 5%; left: 70%; right: 5%;
+    margin: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.inner-box {
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
+    display: block;
+    border: 2px solid rgba(55, 55, 85, 0.2);
+
+}
+
+.items {
+  bottom: 50%;
+  background-color: #339;
+  padding-left: 3px;
+}
+
+.giphy-items {
+  top: 50%;
+  background-color: #355;
+  padding-left: 3px;
+}
+
+.item-header {
+  height: 12%;
+  width: 100%;
+  left: -4px;
+  background-color: rgba(255,255,255,0.4);
+}
+
+.item {
+  background-size: cover;
+  display: inline-block;
+  float: left;
+  width: 32%;
+  height: 28%;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+/*.droptarget {
+    float: left;
+    width: 100px;
+    height: 35px;
+    margin: 15px;
+    padding: 10px;
+    border: 1px solid #aaaaaa;
+}*/

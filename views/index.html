@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+  <head>
+    <link href="/css/reset.css" rel="stylesheet" type="text/css">
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div class="top-container">
+        <h1>this is the login/signup page. or should be</h1>
+        <!-- logged in -->
+        {{#logged_in}}
+        <div class= "garden-icon">
+          <div class= "garden-name">
+            <a href= "/garden/{{garden_id}}">{{handle}}'s Moon Garden..</a>
+          </div>
+          <div class= "garden-thumbnail">
+            <a href= "/garden/{{garden_id}}">GARDEN ICON HERE</a>
+          </div>
+        </div>
+        {{/logged_in}}
+        <!-- logged in -->
+
+        <!-- not logged in -->
+        {{^logged_in}}
+        <div>
+            <form action="/login" method="post">
+              <fieldset>
+                <legend>Login</legend>
+                <form>
+                  <label for="inputEmail">Email</label>
+                    <input name="email" type="text" id="inputEmail" placeholder="Email">
+                  <label for="inputPassword">Password</label>
+                    <input name="password" type="password" id="inputPassword" placeholder="Password">
+                    <button type="submit">Login</button>
+                </form>
+              </fieldset>
+            </form>
+
+          <p>Not a Moon Gardener?<a href="/signup">Sign Up</a></p>
+        </div>
+        {{/logged_in}}
+        <!-- not logged in -->
+
+    </div> <!-- /top-container -->
+  </body>
+</html>
+<!-- update user form on another page? -->
+
+<!--           <form class="form-horizontal" action="/user?_method=PUT" method="post">
+            <fieldset>
+              <legend>Update User</legend>
+              <div class="form-group">
+                <label for="userEmail" class="col-lg-2 control-label">Email</label>
+                <div class="col-lg-10">
+                  <input name="email" type="text" class="form-control" id="userEmail" value="{{email}}">
+                </div>
+                <input type="submit" />
+              </div>
+            </fieldset>
+          </form> -->
