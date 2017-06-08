@@ -22,18 +22,40 @@ for (i=0;i<120;i++) {
     Gspace.append(c);
   }
 }
-// all this does is produces a bunch of random colored divs to show me where i am in this garden in the scrollable dialog
+// all this does is produces a bunch of random colored divs to show me where i am in this garden in the scrollable div
+
+
 
 // change this from params of the route
+// HOW DO I REFERENCE THIS?  IS MY BRAIN MUSH RIGHT NOW?
 userGardenID = '0';
 
 
-// this obj will be populated by data from ajax call, and stored on server, but for now is built only by this script, still have to write the parts where it is gotten and updated
+// this obj will be populated by data from ajax call, and stored on server on save, but for now is built only by this script, still have to write the parts where it is gotten and updated
 let gardenData = {
   id: userGardenID,
   data: []  //array contains items in the form {locx:'number',locy:'number',url:'aURL'}
 };
-//still need to write ajax call to internal api to populate garden data
+
+// callGardenAPI(userGardenID);
+
+// lets try this internal api call thing
+// function callGardenAPI (gardenID) {
+//   // this should route to a get in app.js that responds with the gardendata column of the correlated gardenID....
+//   let URL = "#";
+//      $.ajax(URL, {
+//       success: function(gardenInDB) {
+//         gardenData.data = gardenInDB;  //maybe do this ????
+//         console.log(gardenInDB);
+//       },
+//       error: function() {
+//          console.log('An error occurred in garden API call');
+//       }
+//      });
+// }
+
+
+
 
 // droppableItems not the same as gardenData.data.  gardenData.data should include some of this stuff.  Craig, figure out where you are keeping things.
 
@@ -44,39 +66,39 @@ let droppableItems =
 [
 {
   name: 'stepstone',
-  url: 'images/stepstone.png'
+  url: '../../public/images/stepstone.png'
 },
 {
   name: 'puddle',
-  url: 'images/puddle.png'
+  url: '../../public/images/puddle.png'
 },
 {
   name: 'bigrocks',
-  url: 'images/bigrocks.png'
+  url: '../../public/images/bigrocks.png'
 },
 {
   name: 'verticalbarrier',
-  url: 'images/verticalbarrier.png'
+  url: '../../public/images/verticalbarrier.png'
 },
 {
   name: 'horizontalbarrier',
-  url: 'images/horizontalbarrier.png'
+  url: '../../public/images/horizontalbarrier.png'
 },
 {
   name: 'squarehedges',
-  url: 'images/squarehedges.png'
+  url: '../../public/images/squarehedges.png'
 },
 {
   name: 'birdbath',
-  url: 'images/birdbath.png'
+  url: '../../public/images/birdbath.png'
 },
 {
   name: 'masonry',
-  url: 'images/masonry.png'
+  url: '../../public/images/masonry.png'
 },
 {
   name: 'shrubbery',
-  url: 'images/shrubbery.png'
+  url: '../../public/images/shrubbery.png'
 }
 ];  //fill this in with objs
 

@@ -33,7 +33,7 @@ app.get('/', function(req, res){
   if(user){
     let data = {
       "logged_in": true,
-      // "garden_id": user.garden_id,
+      "garden_id": user.garden_id,
       "handle": user.handle
     };
     res.render('index', data);
