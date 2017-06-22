@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-
 const pgp = require('pg-promise')();
 const mustacheExpress = require('mustache-express');
 const methodOverride = require('method-override')
@@ -78,6 +77,7 @@ app.post('/signup', function(req, res){
       db
       .one("INSERT INTO users (email, password_digest, handle) VALUES ($1, $2, $3) returning id", [data.email, hash, data.handle])
       // .one("INSERT INTO gardens (garden_name, garden_owner, contents, birthday)   VALUES($1,$2,$3,$4)", [])
+      // how do i get the users' garden ids to match garden ids?
       .catch(function(e){
         res.send('Failed to create user and/or garden: ' + e);
       })
