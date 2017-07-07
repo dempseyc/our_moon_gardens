@@ -74,18 +74,6 @@ body{
 /*end scrollbar thing*/
 /*end scrollbar thing*/
 
-button {
-  background: none;
-  border: none;
-  margin: 0;
-  padding: 0;
-  font-size: 2rem;
-  color: #FFF;
-}
-
-input {
-  border: none;
-}
 
 .main-container{
   position: static;
@@ -151,10 +139,7 @@ input {
   bottom: 50%;
   background-color: #339;
   padding-left: 3px;
-}
-
-.giphy-controls div{
-  display: inline;
+  cursor: pointer;
 }
 
 .giphy-items {
@@ -167,10 +152,34 @@ input {
   color: #FFF;
   display: flex;
   flex-direction: row;
-  height: 12%;
-  width: 100%;
-  left: -4px;
+  justify-content: flex-start;
+  align-content: center;
+  height: 2rem;
   background-color: rgba(255,255,255,0.4);
+}
+
+#giphy-search{
+
+}
+
+.giphy-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 50%;
+  cursor: pointer;
+}
+
+button {
+  font-size: 4em;
+  background: none;
+  border: none;
+  color: #FFF;
+}
+
+input {
+  border: none;
+  margin: 2px;
 }
 
 .item {
