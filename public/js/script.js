@@ -22,20 +22,18 @@ for (i=0;i<120;i++) {
     Gspace.append(c);
   }
 }
-// all this does is produces a bunch of random colored divs to show me where i am in this garden in the scrollable div
-
-
 
 // change this from params of the route
-// HOW DO I REFERENCE THIS?  IS MY BRAIN MUSH RIGHT NOW?
 userGardenID = '0';
-
 
 // this obj will be populated by data from ajax call, and stored on server on save, but for now is built only by this script, still have to write the parts where it is gotten and updated
 let gardenData = {
   id: userGardenID,
   data: []  //array contains items in the form {locx:'number',locy:'number',url:'aURL'}
 };
+
+///////////////////////////////////////////////////////////////////////////////
+// USER GARDEN API PART
 
 // callGardenAPI(userGardenID);
 
@@ -54,14 +52,8 @@ let gardenData = {
 //      });
 // }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-// droppableItems not the same as gardenData.data.  gardenData.data should include some of this stuff.  Craig, figure out where you are keeping things.
-
-// Craig, droppableItems is a reference, not a storage space.  all storage should go to gardenData.data array.
-// that object will be stringified and stored in the db
-// on with the droppableItems, a list of built-in pixel-paintings Craig made.
 let droppableItems =
 [
 {
@@ -114,7 +106,6 @@ $('.item8'),
 $('.item9')
 ];
 
-//why type this out when i can get javascript to build the css and html?
 JQitems.forEach(function (handle, idx) {
   url = droppableItems[idx].url;
   droppableItems[idx].jqhandle = handle;
@@ -122,17 +113,14 @@ JQitems.forEach(function (handle, idx) {
   handle.attr({'onClick': 'evalClickEvent(this)'});
 });
 
-// what does this do?  it assigns a url from the droppable items list to a background attribute of the jquery dom element
-// this fills items display with images from /images for the user to choose from
 
 ///////////////////////////////////////////////////////////////////////////////
 // GIPHY API PART
 
-// again, Craig, droppableGiphyItems should be a reference, not a storage space.  all storage should go to gardenData.data
-// that is the object which will be stringified and stored in the db.
 droppableGiphyItems = [];
 
-let theForm = $('#giphysearch');
+let page = 0;
+let theForm = $('#giphy-search');
 
 let JQgiphyItems = [
 $('.giphy-item1'),
@@ -153,14 +141,13 @@ JQgiphyItems.forEach(function (item, idx){
 //user has made a giphy search stickers only
 theForm.submit(function(event){
   event.preventDefault();
-  let input = $('#searchform').val();
-  callGiphyAPI(input);
+  let input = $('#search-form').val();
+  callGiphyAPI(input,page);
 });
 
-// there is a param for the giphy api url string that will offset results by a number and i will build a button to make the call for next 9 items, just for fun
-// right now only the first 9 results are available
+// need to add arg for offset.
 
-function callGiphyAPI (searchterm) {
+function callGiphyAPI (searchterm,offset) {
   let key = "dc6zaTOxFJmzC";
   let URL = "http://api.giphy.com/v1/stickers/search?q="+searchterm+"&api_key="+key;
      $.ajax(URL, {  //howcome this syntax works for me and no other does?
@@ -182,7 +169,6 @@ function callGiphyAPI (searchterm) {
       }
      });
 }
-
 
 let holdingItem = false;
 
@@ -252,7 +238,8 @@ function evalClickEvent(target) {
   // console.log("evalClickEvent called on "+target);
 }
 
-
+//perhaps put all of this at top and track mouse status within an obj
+// status like item/noitem/eraser/stuff like that
 $(document).on('mousemove', function(e){
     $('#held-item').css({
        left:  e.pageX,
@@ -260,65 +247,4 @@ $(document).on('mousemove', function(e){
     });
 });
 
-/////////////////////////////////////////////////////////////////
 
-// notes
-
-/////////////////////////////////////////////////////////////////
-
-// $(this).css( 'cursor', 'url(cursor.png), auto' );
-
-
-// function dragStart(event) {
-//     event.dataTransfer.setData("Text", event.target.id);
-//     document.getElementById("demo").innerHTML = "Started to drag the p element";
-// }
-
-// function allowDrop(event) {
-//     event.preventDefault();
-// }
-
-// function drop(event) {
-//     event.preventDefault();
-//     var data = event.dataTransfer.getData("Text");
-//     event.target.appendChild(document.getElementById(data));
-//     document.getElementById("demo").innerHTML = "The p element was dropped";
-// }
-
-
-/////////////////////////////////////////////////////
-
-// document.onmousemove = mouseMove;
-// function mouseMove(ev){
-//   ev           = ev || window.event;
-//   var mousePos = mouseCoords(ev);
-// }
-// function mouseCoords(ev){
-//   if(ev.pageX || ev.pageY){
-//     return {x:ev.pageX, y:ev.pageY};
-//   }
-//   return {
-//     x:ev.clientX + document.body.scrollLeft - document.body.clientLeft,
-//     y:ev.clientY + document.body.scrollTop  - document.body.clientTop
-//   };
-// }
-
-
-// document.onmouseup = mouseUp;
-// var dragObject     = null;
-// function makeClickable(object){
-//   object.onmousedown = function(){
-//     dragObject = this;
-//   }
-// }
-// function mouseUp(ev){
-//   dragObject = null;
-// }
-
-
-
-// $("#button").on('click', function (e) {
-//     e.preventDefault();
-//     var $self = $(this);
-//     $self.before($self.prev('table').clone());
-// });

@@ -4,8 +4,10 @@ html, body{
     position: static;
     overflow: 'hidden',
     height: '100%'
-    font-style: serif;
+    font-style: sans-serif;
+    font-size: 16px;
 }
+
 /* based on *//*Reuben Godeau's Scrollbars*//*http://codepen.io/RG/pen/yqvmL*/
 /*internet explorer scrollbalken*/
 body{
@@ -34,7 +36,7 @@ body{
   }
 
   scrollbarbutton {
-     display: none !important;
+    display: none !important;
   }
 
   scrollbar[orient="vertical"] {
@@ -45,7 +47,7 @@ body{
 .scrollbar-container {
     width: 70%;
     position: absolute;
-    top: 5%; bottom: 0; left: 0; right: 0;
+    top: 3rem; bottom: 0; left: 0; right: 0;
     margin: 20px;
     border: 4px solid rgba(0, 0, 0, 0.2);
     overflow: auto;
@@ -67,6 +69,29 @@ body{
     background-color: rgba(0, 0, 0, 0.3);
 }
 
+/*end scrollbar thing*/
+/*end scrollbar thing*/
+/*end scrollbar thing*/
+/*end scrollbar thing*/
+
+button {
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font-size: 2rem;
+  color: #FFF;
+}
+
+input {
+  border: none;
+}
+
+.main-container{
+  position: static;
+  padding-top: 0.5rem;
+}
+
 #held-item {
   position: absolute;
   pointer-events: none;
@@ -80,53 +105,56 @@ body{
   position: absolute;
   height: 10px;
   width: 10px;
-  font-size: 8px;
-  text-align: center;
-  vertical-align: center;
 }
 
-nav {
-  width: 100%;
-  position: fixed;
-  top: 5px; right: 30px;
+.nav ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 3rem;
+  align-items: center;
 }
 
-nav span {
+.nav span {
   font-size: 1.4em;
   font-style: italic;
 }
 
-nav ul li {
-  display: inline;
-  float: right;
-  padding: 0 10px 0 10px;
+.nav ul li {
+}
+
+#logo {
+  height: 6rem;
+  padding-top: 1.5rem;
 }
 
 .clearfix {
-
 }
 
 .item-container {
-    width: 20%;
-    position: absolute;
-    top: 5%; bottom: 5%; left: 70%; right: 5%;
-    margin: 40px;
-    border: 4px solid rgba(0, 0, 0, 0.2);
-    overflow: hidden;
+  width: 20%;
+  position: absolute;
+  top: 5%; bottom: 5%; left: 70%; right: 5%;
+  margin: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.2);
+  overflow: hidden;
 }
 
 .inner-box {
-    position: absolute;
-    top: 0; bottom: 0; left: 0; right: 0;
-    display: block;
-    border: 2px solid rgba(55, 55, 85, 0.2);
-
+  display: block;
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  border: 2px solid rgba(55, 55, 85, 0.2);
 }
 
 .items {
   bottom: 50%;
   background-color: #339;
   padding-left: 3px;
+}
+
+.giphy-controls div{
+  display: inline;
 }
 
 .giphy-items {
@@ -136,6 +164,9 @@ nav ul li {
 }
 
 .item-header {
+  color: #FFF;
+  display: flex;
+  flex-direction: row;
   height: 12%;
   width: 100%;
   left: -4px;
@@ -150,11 +181,3 @@ nav ul li {
   height: 28%;
   border: 1px solid rgba(255,255,255,0.3);
 }
-/*.droptarget {
-    float: left;
-    width: 100px;
-    height: 35px;
-    margin: 15px;
-    padding: 10px;
-    border: 1px solid #aaaaaa;
-}*/

@@ -4,70 +4,71 @@
   <title>your moon garden</title>
   <link rel= "stylesheet" type= "text/css" href= "../../public/css/reset.css">
   <link rel= "stylesheet" type= "text/css" href= "../../public/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-
-<nav>
-  <ul>
-    <li><img src= "../../public/images/our_moon_gardens_logo.gif" alt= "mymoongaardenlogo"  height= "100px" width= "auto"></li>
-    <li>[/logout?]</li>
-    <li>[username]</li>
-    <li>[$AVE CHANGE$]</li>
-    <li><span>{Llewellyn Garden}</span></li>  <!-- {{garden_name}} -->
-  </ul>
-</nav>
-
-<div class= "scrollbar-container">
-    <div id = "garden-space" class= "inner">
-        <p>MyMoonGaarden</p>
+  <div class= "main-container">
+    <div class= "nav">
+      <ul>
+        <li><span>{Llewellyn Garden}</span></li>  <!-- {{garden_name}} -->
+        <li>[username]</li>
+        <li>[$AVE CHANGE$]</li>
+        <li>[/logout?]</li>
+        <li><img src= "../../public/images/our_moon_gardens_logo.gif" alt= "mymoongaardenlogo" id= "logo"></li>
+      </ul>
     </div>
-</div>
 
-<div class= "item-container">
-  <div class= "items inner-box">
-    <div class= "item-header">Items</div>
-    <div class= "item item1"></div>
-    <div class= "item item2"></div>
-    <div class= "item item3"></div>
-    <div class= "item item4"></div>
-    <div class= "item item5"></div>
-    <div class= "item item6"></div>
-    <div class= "item item7"></div>
-    <div class= "item item8"></div>
-    <div class= "item item9"></div>
-  </div>
-  <div class= "giphy-items inner-box">
-    <div class= "item-header">
-      <form id="giphysearch">
-        <input id= "searchform" name= "search">
-        <button id= "submitbutton" type= "submit"></button>
-      </form>
+    <div class= "scrollbar-container">
+        <div id = "garden-space" class= "inner">
+            <p>MyMoonGaarden</p>
+        </div>
     </div>
-    <div class= "item giphy-item1"></div>
-    <div class= "item giphy-item2"></div>
-    <div class= "item giphy-item3"></div>
-    <div class= "item giphy-item4"></div>
-    <div class= "item giphy-item5"></div>
-    <div class= "item giphy-item6"></div>
-    <div class= "item giphy-item7"></div>
-    <div class= "item giphy-item8"></div>
-    <div class= "item giphy-item9"></div>
-  </div>
-</div>
+
+    <div class= "item-container">
+      <div class= "items inner-box">
+        <div class= "item-header">P-B-icon</div>
+        <div class= "item item1"></div>
+        <div class= "item item2"></div>
+        <div class= "item item3"></div>
+        <div class= "item item4"></div>
+        <div class= "item item5"></div>
+        <div class= "item item6"></div>
+        <div class= "item item7"></div>
+        <div class= "item item8"></div>
+        <div class= "item item9"></div>
+      </div>
+
+
+      <div class= "giphy-items inner-box">
+        <div class= "item-header">
+          <form id="giphy-search">
+            <input id= "search-form" name= "search" default= "search" />
+            <button id= "submitbutton" type= "submit">&#x2315</button>
+          </form>
+          <div class="giphy-controls">
+            <div class= "giphy-back"> < </div>
+            <div class= "giphy-page"> 1 </div>
+            <div class= "giphy-forward"> > </div>
+          </div>
+        </div> <!-- item-header -->
+        <div class= "item giphy-item1"></div>
+        <div class= "item giphy-item2"></div>
+        <div class= "item giphy-item3"></div>
+        <div class= "item giphy-item4"></div>
+        <div class= "item giphy-item5"></div>
+        <div class= "item giphy-item6"></div>
+        <div class= "item giphy-item7"></div>
+        <div class= "item giphy-item8"></div>
+        <div class= "item giphy-item9"></div>
+      </div>
+    </div> <!-- item-container -->
+
+
+  </div> <!-- main-container -->
 
   <script src= "../../public/js/jquery.js" type= "text/javascript" charset= "utf-8"></script>
   <script src= "../../public/js/script.js" type= "text/javascript" charset= "utf-8"></script>
 </body>
+
+
 </html>
-
-
-<!-- <p>Drag the p element back and forth between the two rectangles:</p>
-
-<div class="droptarget" ondrop="drop(event)" ondragover="allowDrop(event)">
-  <p ondragstart="dragStart(event)" draggable="true" id="dragtarget">Drag me!</p>
-</div>
-
-
-<div class="droptarget" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-
-<p id="demo"></p> -->
