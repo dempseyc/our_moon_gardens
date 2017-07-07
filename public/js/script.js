@@ -152,6 +152,11 @@ JQitems.forEach(function (handle, idx) {
 
 droppableGiphyItems = [];
 
+// may need a little function in here to handle larger widths
+// def can get width from droppableGiphyItems[i].width ??
+///////////////////////////////////////////////////////////////////////////////
+
+
 let page = 0;
 let theForm = $('#giphy-search');
 
@@ -181,10 +186,11 @@ theForm.submit(function(event){
 // need to add page argument for offset.
 //// also would like to return width of gif and resize for app ********************************
 //// ******************************************************************************************
+//// how shall we return the width of said gif?
 
 function callGiphyAPI (searchterm,offset) {
   let key = "dc6zaTOxFJmzC";
-  let URL = "http://api.giphy.com/v1/stickers/search?q="+searchterm+"&api_key="+key;
+  let URL = "http://api.giphy.com/v1/stickers/search?q="+searchterm+"&offset="+offset+"&api_key="+key;
      $.ajax(URL, {  //howcome this syntax works for me and no other does?
       success: function(json) {
         console.log(json); //json is an array  also json.data is an array
@@ -193,9 +199,11 @@ function callGiphyAPI (searchterm,offset) {
           let droppableGiphyItem = {
             name: searchterm+'-'+droppableGiphyItems.length,
             url: json.data[i].images.downsized.url,
-            jqhandle: JQgiphyItems[i]
+            jqhandle: JQgiphyItems[i],
+            width: json.data[i].images.downsized.width
           };
           let cloneOfObj = JSON.parse(JSON.stringify(droppableGiphyItem));
+          //even if i get the width, how do i modulate the clone?
           droppableGiphyItems.push(cloneOfObj);
         }
       },
