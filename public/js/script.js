@@ -1,7 +1,36 @@
+//// think out how this should work
+// we build the dom and cache jquery items
+// we have 1 funct for hitting giphy api which includes offset
+// we have functs for picking up and dropping items
+// we have functs for changing the status of the mouse from building to changing paintbrush to erasing to saving changes
+// we have built the string to be saved in server
+// organize better into utilities, interactions, and apis
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+// UTILITIES
 
 let ranNum = function (min,max) {
   return Math.floor(Math.random() * (max + 1 - min)) + min;
 }
+
+//// change this to an obj that tracks state of user interaction 'mouse-status?'
+//// stuff like 'holding-item/eraser/off-garden/etc/locX/locY/etc'  //////////////////////////
+$(document).on('mousemove', function(e){
+    $('#held-item').css({
+       left:  e.pageX,
+       top:   e.pageY
+    });
+});
+
+// END UTILITIES
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+// DOM BUILDING FE
 
 let b = $('body');
 let Gspace = $('#garden-space');
@@ -23,6 +52,10 @@ for (i=0;i<120;i++) {
   }
 }
 
+
+///////////////////////////////////////////////////////////////////////////////
+// USER GARDEN API PART
+
 // change this from params of the route
 userGardenID = '0';
 
@@ -32,12 +65,8 @@ let gardenData = {
   data: []  //array contains items in the form {locx:'number',locy:'number',url:'aURL'}
 };
 
-///////////////////////////////////////////////////////////////////////////////
-// USER GARDEN API PART
-
 // callGardenAPI(userGardenID);
 
-// lets try this internal api call thing
 // function callGardenAPI (gardenID) {
 //   // this should route to a get in app.js that responds with the gardendata column of the correlated gardenID....
 //   let URL = "#";
@@ -54,6 +83,8 @@ let gardenData = {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+// STILL JUST BUILDING FE WITH LIST OF DROPPABLE ITEMS
 let droppableItems =
 [
 {
@@ -92,8 +123,10 @@ let droppableItems =
   name: 'shrubbery',
   url: '../../public/images/shrubbery.png'
 }
-];  //fill this in with objs
+];
 
+
+// MAY BE A MORE SAVVY WAY TO FILL IN THIS GRID
 let JQitems = [
 $('.item1'),
 $('.item2'),
@@ -106,13 +139,13 @@ $('.item8'),
 $('.item9')
 ];
 
+// REMEMBER THAT THEY ARE BACKGROUND IMAGES SO THEY DONT GIVE A SIZE EASILY
 JQitems.forEach(function (handle, idx) {
   url = droppableItems[idx].url;
   droppableItems[idx].jqhandle = handle;
   handle.css('background-image', 'url('+url+')');
   handle.attr({'onClick': 'evalClickEvent(this)'});
 });
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // GIPHY API PART
@@ -145,7 +178,9 @@ theForm.submit(function(event){
   callGiphyAPI(input,page);
 });
 
-// need to add arg for offset.
+// need to add page argument for offset.
+//// also would like to return width of gif and resize for app ********************************
+//// ******************************************************************************************
 
 function callGiphyAPI (searchterm,offset) {
   let key = "dc6zaTOxFJmzC";
@@ -170,11 +205,12 @@ function callGiphyAPI (searchterm,offset) {
      });
 }
 
+//// this functionality will change when mouse-status is implemented
 let holdingItem = false;
 
 function evalClickEvent(target) {
 
-  //if not holding item, and in items divs, pickup item
+  //if not holding item, and in items divs, mouse picks up item
 
   if (!holdingItem && target.classList.contains('item')) {
     let url = target.style.backgroundImage;
@@ -238,13 +274,5 @@ function evalClickEvent(target) {
   // console.log("evalClickEvent called on "+target);
 }
 
-//perhaps put all of this at top and track mouse status within an obj
-// status like item/noitem/eraser/stuff like that
-$(document).on('mousemove', function(e){
-    $('#held-item').css({
-       left:  e.pageX,
-       top:   e.pageY
-    });
-});
 
 
