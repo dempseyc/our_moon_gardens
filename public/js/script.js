@@ -1,108 +1,26 @@
 //// thinking out how this should work
-// we have a funct for building the init dom and cacheing jquery items
+//
 // we have functs for picking up and dropping items
 // we have a funct for erasing items
-// we have a funct for hitting giphy api which includes offset
-// we have functs for changing the status of the mouse from building to changing paintbrush to erasing to saving changes
+//// actually, we don't have a funct for that it's just a dream at this point
+////////// what we might do is switch the mouseStatus to erase
+////////// then be able to somehow remove particular divs from the Gspace
+////////// how we will achieve this is yet to be discovered
+////////// that it will be done is an eventuality
+//
+// we have a funct for hitting giphy api which includes offset meaning the next 8 results
+//
+////////// let's do that next in the implementation because that will be really fun
+//////////
+// we have functs for changing the status of the mouse from adding, to changing paintbrush, to erasing, to saving changes in the data
 // we have a funct to build the string to be saved in server
 // organize better into utilities, interactions, and apis
 // the big built string should be stored in a hidden form regularly... when user saves, the body will be parsed and the string will be updated in database
 
-
 /////////////////////////////////////////////////////////////////////////////////////////////
 // DOM BUILDING FE
+// LIST OF USEABLE ITEMS
 
-//// CACHE DOM
-
-let b = $('body');
-
-// this guys width is 2000px his height is 1200px btw
-let Gspace = $('#garden-space');
-let HELD = $('<div id="held-item">');  // instantiating this DOM element for append later
-
-let ranColors = ['#88A','#78A','#87A','#889'];
-
-
-//really dont want b to be target of click event  should be either an item or the gspace
-
-Gspace.attr({'onClick': 'evalClickEvent(this)'});
-
-// b.attr({'onClick': 'evalClickEvent(this)'});
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-// UTILITIES
-
-
-// this is the main utility at work now
-let mouseStatus = {
-  xPos: 0,
-  yPos: 0,
-  holding: false,
-  erasing: false
-};
-
-let ranNum = function (min,max) {
-  return Math.floor(Math.random() * (max + 1 - min)) + min;
-};
-
-let updateMouseStatus = function(e) {
-  mouseStatus.xPos = e.pageX;
-  mouseStatus.yPos = e.pageY;
-  mouseStatus.holding = true;
-  updateHeldItem();
-};
-
-let updateHeldItem = function() {
-  HELD.css({
-       left:  mouseStatus.xPos - 25,
-       top:   mouseStatus.yPos - 25
-    });
-};
-
-b.on('mousemove', function(e){
-  updateMouseStatus(e);
-});
-
-Gspace.on('mousemove', function(e) {
-  updateMouseStatus(e);
-});
-
-
-// END UTILITIES
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////
-// USER GARDEN API PART
-
-// change this from params of the route
-userGardenID = '0';
-
-// this obj will be populated by data from ajax call, and stored on server on save, but for now is built only by this script, still have to write the parts where it is gotten and updated
-let gardenData = {
-  id: userGardenID,
-  data: []  //array contains items in the form {locx:'number',locy:'number',url:'aURL'}
-};
-
-// callGardenAPI(userGardenID);
-
-// function callGardenAPI (gardenID) {
-//   // this should route to a get in app.js that responds with the gardendata column of the correlated gardenID....
-//   let URL = "#";
-//      $.ajax(URL, {
-//       success: function(gardenInDB) {
-//         gardenData.data = gardenInDB;  //maybe do this ????
-//         console.log(gardenInDB);
-//       },
-//       error: function() {
-//          console.log('An error occurred in garden API call');
-//       }
-//      });
-// }
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-// STILL JUST BUILDING FE WITH LIST OF DROPPABLE ITEMS
 let droppableItems =
 [
 {
@@ -156,9 +74,6 @@ $('.item8'),
 $('.item9')
 ];
 
-// REMEMBER THAT THEY ARE BACKGROUND IMAGES SO THEY DONT GIVE A SIZE EASILY
-// HOW TO CSS THIS??
-
 JQitems.forEach(function (handle, idx) {
   url = droppableItems[idx].url;
   droppableItems[idx].jqhandle = handle;
@@ -166,14 +81,94 @@ JQitems.forEach(function (handle, idx) {
   handle.attr({'onClick': 'evalClickEvent(this)'});
 });
 
-///////////////////////////////////////////////////////////////////////////////
+//// CACHE DOM
+
+let b = $('body');
+
+  // this guys width is 2000px his height is 1200px btw, i'm talking about Mr. Gspace
+let Gspace = $('#garden-space');
+let HELD = $('<div id="held-item">');  // instantiating this element for append to b later
+
+// the "this" target should be either an item or the Gspace
+// the "evalClickEvent(this)"" feels like a good funct so far in this adventure tho
+Gspace.attr({'onClick': 'evalClickEvent(this)'});
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+// UTILITIES
+
+// the main utility at work now
+let mouseStatus = {
+  xPos: 0,
+  yPos: 0,
+  holding: false,
+  erasing: false
+};
+
+//// clientX and clientY make no difference, but what I want is the return of the absolute position of the mouse within the Gspace..   is that so much to ask for????
+let updateMouseStatus = function(e) {
+  mouseStatus.xPos = e.pageX;
+  mouseStatus.yPos = e.pageY;
+  mouseStatus.holding = true;
+  updateHeldItem();
+};
+
+let updateHeldItem = function() {
+  HELD.css({
+       left:  mouseStatus.xPos - 25,
+       top:   mouseStatus.yPos - 25
+    });
+};
+
+b.on('mousemove', function(e){
+  updateMouseStatus(e);
+});
+
+Gspace.on('mousemove', function(e) {
+  updateMouseStatus(e);
+});
+
+
+// END UTILITIES
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// USER GARDEN API PART
+
+// change this from params of the route
+userGardenID = '0';
+
+// this obj will be populated by data from ajax call, and stored on server on save, but for now is built only by this script, still have to write the parts where it is gotten and updated
+let gardenData = {
+  id: userGardenID,
+  data: []  //array contains items in the form {locx:'number',locy:'number',url:'aURL'}
+};
+
+// callGardenAPI(userGardenID);
+
+// function callGardenAPI (gardenID) {
+//   // this should route to a get in app.js that responds with the gardendata column of the correlated gardenID....
+//   let URL = "#";
+//      $.ajax(URL, {
+//       success: function(gardenInDB) {
+//         gardenData.data = gardenInDB;  //maybe do this ????
+//         console.log(gardenInDB);
+//       },
+//       error: function() {
+//          console.log('An error occurred in garden API call');
+//       }
+//      });
+// }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
 // GIPHY API PART
 
 droppableGiphyItems = [];
 
 // may need a little function in here to handle larger widths
 // def can get width from droppableGiphyItems[i].width ??
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 let page = 0;
@@ -205,7 +200,7 @@ theForm.submit(function(event){
 // need to add page argument for offset.
 //// also would like to return width of gif and resize for app ********************************
 //// ******************************************************************************************
-//// how shall we return the width of said gif?
+//// how shall we return the width of the gif?
 
 function callGiphyAPI (searchterm,offset) {
   let key = "dc6zaTOxFJmzC";
@@ -307,6 +302,8 @@ function evalClickEvent(target) {
 
 //// old code
 
+// let ranColors = ['#88A','#78A','#87A','#889'];  // not used now
+
 // put a bunch of divs in garden-space div
 // for (i=0;i<120;i++) {
 //   for(j=0;j<200;j++){
@@ -320,4 +317,11 @@ function evalClickEvent(target) {
 //     Gspace.append(c);
 //   }
 // }
+
+// let ranNum = function (min,max) {
+//   return Math.floor(Math.random() * (max + 1 - min)) + min;
+// };
+//
+  //// still a good guy though, good utility to keep bouncing around in different projs
+////////////////////////////////////   should be included in a craig.js
 
