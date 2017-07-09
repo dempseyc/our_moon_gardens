@@ -86,7 +86,7 @@ body{
 }
 
 .garden-item {
-  pointer-events: none;
+  /*pointer-events: none;*/
 }
 
 .block {
@@ -112,8 +112,9 @@ body{
 }
 
 #logo {
-  height: 6rem;
+  height: 5rem;
   padding-top: 1.5rem;
+  padding-left: 0.5rem;
 }
 
 .clearfix {
