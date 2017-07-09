@@ -64,10 +64,6 @@ let ranColors = ['#88A','#78A','#87A','#889'];
 
 // put a bunch of divs in garden-space div
 /////////////////////////////////   THIS MAKES EXECUTION SUPER-SLOW
-
-//can i move eval click event to somewhere less weighty?
-
-
 for (i=0;i<120;i++) {
   for(j=0;j<200;j++){
     let c = $('<div>');
@@ -80,6 +76,9 @@ for (i=0;i<120;i++) {
     Gspace.append(c);
   }
 }
+
+//can i move eval click event to somewhere less weighty?
+
 
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,5 @@
 //// thinking out how this should work
-// we have a funct for building the init dom and caching jquery items
+// we have a funct for building the init dom and cacheing jquery items
 // we have functs for picking up and dropping items
 // we have a funct for erasing items
 // we have a funct for hitting giphy api which includes offset
@@ -10,77 +10,66 @@
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
+// DOM BUILDING FE
+
+//// CACHE DOM
+
+let b = $('body');
+
+// this guys width is 2000px his height is 1200px btw
+let Gspace = $('#garden-space');
+let HELD = $('<div id="held-item">');  // instantiating this DOM element for append later
+
+let ranColors = ['#88A','#78A','#87A','#889'];
+
+
+//really dont want b to be target of click event  should be either an item or the gspace
+
+Gspace.attr({'onClick': 'evalClickEvent(this)'});
+
+// b.attr({'onClick': 'evalClickEvent(this)'});
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 // UTILITIES
 
-let ranNum = function (min,max) {
-  return Math.floor(Math.random() * (max + 1 - min)) + min;
-}
 
+// this is the main utility at work now
 let mouseStatus = {
   xPos: 0,
   yPos: 0,
-  focus: "main",
   holding: false,
   erasing: false
+};
+
+let ranNum = function (min,max) {
+  return Math.floor(Math.random() * (max + 1 - min)) + min;
 };
 
 let updateMouseStatus = function(e) {
   mouseStatus.xPos = e.pageX;
   mouseStatus.yPos = e.pageY;
-  // what is the purpose of the focus property of mouseStatus?
   mouseStatus.holding = true;
   updateHeldItem();
 };
 
 let updateHeldItem = function() {
-  $('#held-item').css({
-       left:  mouseStatus.xPos,
-       top:   mouseStatus.yPos
+  HELD.css({
+       left:  mouseStatus.xPos - 25,
+       top:   mouseStatus.yPos - 25
     });
 };
 
-$(document).on('mousemove', function(e){
+b.on('mousemove', function(e){
   updateMouseStatus(e);
 });
 
-$(document).on('click', function(e){
+Gspace.on('mousemove', function(e) {
   updateMouseStatus(e);
 });
+
 
 // END UTILITIES
 /////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-// DOM BUILDING FE
-
-let b = $('body');
-let Gspace = $('#garden-space');
-// this guys width is 2000px his height is 1200px;
-
-let ranColors = ['#88A','#78A','#87A','#889'];
-
-// put a bunch of divs in garden-space div
-/////////////////////////////////   THIS MAKES EXECUTION SUPER-SLOW
-
-//can i move eval click event to somewhere less weighty?
-
-
-for (i=0;i<120;i++) {
-  for(j=0;j<200;j++){
-    let c = $('<div>');
-    c.addClass('block');
-    c.addClass(i+'-'+j);  //this classname locates the fucker
-    c.css('background-color', ranColors[ranNum(0,3)]);
-    c.css('top', i*10+'px');
-    c.css('left', j*10+'px');
-    c.attr({'onClick': 'evalClickEvent(this)'});
-    Gspace.append(c);
-  }
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // USER GARDEN API PART
@@ -243,75 +232,92 @@ function callGiphyAPI (searchterm,offset) {
      });
 }
 
-//// this functionality will change when mouse-status is implemented
-let holdingItem = false;
+
+
+// from here you have to use mouseStatus for holding mouse events
 
 function evalClickEvent(target) {
 
   //if not holding item, and in items divs, mouse picks up item
 
-  if (!holdingItem && target.classList.contains('item')) {
+  if (!mouseStatus.holding && target.classList.contains('item')) {
+    mouseStatus.holding = true;
     let url = target.style.backgroundImage;
     url = url.replace('url(','').replace(')','').replace(/\"/gi, "");
     let img = $('<img>');
-    img.attr({'src':url});
-    let heldItem = $('<div id="held-item">');
-    // gardenItem.addClass('.held-item');
-    heldItem.append(img);
-    b.append(heldItem);
+    img.attr({ 'src': url });
+
+    // this kinda looks right?
+    HELD.append(img);
+    b.append(HELD);
+
     holdingItem = true;
-  }
+  };
 
   //if holding item, and in items divs, switch items
 
-  if (holdingItem && target.classList.contains('item')) {
-    $('#held-item').remove();
+  if (mouseStatus.holding && target.classList.contains('item')) {
+    HELD.empty();
     let url = target.style.backgroundImage;
     url = url.replace('url(','').replace(')','').replace(/\"/gi, "");
     let img = $('<img>');
     img.attr({'src':url});
-    let heldItem = $('<div id="held-item">');
-    heldItem.append(img);
-    b.append(heldItem);
+    HELD.append(img);
+    b.append(HELD);
     holdingItem = true;
-  }
+  };
 
   //if in garden area, and holding item, drop copy of item
-  //// to make eval click event less weighty, mouse must return location in another way to place image in scrollable div more efficiently.
 
-  if (holdingItem && target.classList.contains('block')) {
-    let location = target.classList[1];
-    location = location.split("-");
-    location = location.map(function (item){
-      item = Number(item)*10;
-      return item;
-    });
-    console.log(location);
+  if (mouseStatus.holding && target.classList.contains('inner')) {
+    console.log("drop item");
     let url = $('#held-item').find('img').attr('src');
     url = url.replace('url(','').replace(')','').replace(/\"/gi, "");
-    console.log(url);
     let img = $('<img>');
-    img.attr({'src':url});
+    img.attr({'src': url});
     let gardenItem = $('<div class="garden-item">');
     gardenItem.append(img);
-    gardenItem.css({'position':'absolute','top':location[0]+'px','left':location[1]+'px',});
+
+    // this line should give mouseposition in gspace instead
+    gardenItem.css({
+      'position':'absolute',
+      'left': mouseStatus.xPos+'px',
+      'top': mouseStatus.yPos+'px'
+    });
+
     Gspace.append(gardenItem);
 
+    //////////////////////////////////////////////////////////////////////////
+    // this is the most important part
+    // build obj to add to gardenData, and later send it to server
+    let appUpdateData = function () {
+      let newGardenDataItem = {};
+      newGardenDataItem.url = url;
+      // replace these with garden locations /////////////////////////////////
+      // newGardenDataItem.locx = location[0];
+      // newGardenDataItem.locy = location[1];
+      gardenData.data.push(newGardenDataItem);
+      console.log(gardenData.data);
+    };
 
-//////////////////////////////////////////////////////////////////////////
-//this is the most importatnt part
+    appUpdateData();
 
-    //build obj to add to gardenData, and later send it to server
-    let newGardenDataItem = {};
-    newGardenDataItem.url = url;
-    newGardenDataItem.locx = location[0];
-    newGardenDataItem.locy = location[1];
-    gardenData.data.push(newGardenDataItem);
-    console.log(gardenData.data);  //this does work
-    //this should build gardenData obj to send to server on "$ave Change$" click
   }
-  // console.log("evalClickEvent called on "+target);
-}
+} //eval click event
 
+//// old code
 
+// put a bunch of divs in garden-space div
+// for (i=0;i<120;i++) {
+//   for(j=0;j<200;j++){
+//     let c = $('<div>');
+//     c.addClass('block');
+//     c.addClass(i+'-'+j);  //this classname locates the fucker
+//     c.css('background-color', ranColors[ranNum(0,3)]);
+//     c.css('top', i*10+'px');
+//     c.css('left', j*10+'px');
+//     c.attr({'onClick': 'evalClickEvent(this)'});
+//     Gspace.append(c);
+//   }
+// }
 

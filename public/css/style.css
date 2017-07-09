@@ -86,7 +86,7 @@ body{
 }
 
 .garden-item {
-  /*pointer-events: none;*/
+  pointer-events: none;
 }
 
 .block {
