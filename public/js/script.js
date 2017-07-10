@@ -88,12 +88,15 @@ let b = $('body');
   // this guys width is 2000px his height is 1200px btw, i'm talking about Mr. Gspace
 let Gspace = $('#garden-space');
 let GspaceCont = $('.scrollbar-container');
+let Eraser = $('.erase-mode');
 
 let HELD = $('<div id="held-item">');  // instantiating this element for append to b later
 
 // the "this" target should be either an item or the Gspace
 // the "evalClickEvent(this)"" feels like a good funct so far in this adventure tho
 Gspace.attr({'onClick': 'evalClickEvent(this)'});
+Eraser.attr({'onClick': 'evalClickEvent(this)'});
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 // UTILITIES
@@ -103,14 +106,13 @@ let mouseStatus = {
   xPos: 0,
   yPos: 0,
   holding: false,
-  erasing: false
+  erase: false
 };
 
 //// clientX and clientY make no difference, but what I want is the return of the absolute position of the mouse within the Gspace..   is that so much to ask for????
 let updateMouseStatus = function(e) {
   mouseStatus.xPos = e.pageX;
   mouseStatus.yPos = e.pageY;
-  mouseStatus.holding = true;
   updateHeldItem();
 };
 
@@ -229,31 +231,51 @@ function callGiphyAPI (searchterm,offset) {
      });
 }
 
-
-
-// from here you have to use mouseStatus for holding mouse events
+// even if I give each child an id, how will they be targeted on the click event?  it would make sense to break this evalClickEvent function into separate functions... but it's not clear to me how this would solve this problem of targeted click events.
+function evalEraseEvent(e) {
+  e.stopPropagation;
+}
 
 function evalClickEvent(target) {
 
-  //if not holding item, and in items divs, mouse picks up item
+    // go back to normal pointer state
+  if (mouseStatus.erase && target.classList.contains('erase-mode')) {
+    console.log("unerase mode");
+    mouseStatus.holding = false;
+    mouseStatus.erase = false;
+    Eraser.css('color', '#FFF');
+    $('.garden-item').each(function (){
+      $(this).attr({'pointer-events': 'none'});
+    });
 
-  if (!mouseStatus.holding && target.classList.contains('item')) {
+    // go to erase mode
+  } else if (!mouseStatus.erase && target.classList.contains('erase-mode')) {
+    console.log("erase mode");
+    HELD.remove();
+    mouseStatus.holding = false;
+    mouseStatus.erase = true;
+    Eraser.css('color', '#F00');  //turns
+    $('.garden-item').each(function (){
+      $(this).attr({'pointer-events': 'all'});
+    });
+
+    // pickup item  // this condition is failing
+  } else if (!mouseStatus.erase && !mouseStatus.holding && target.classList.contains('item')) {
     mouseStatus.holding = true;
+    mouseStatus.erase = false;
     let url = target.style.backgroundImage;
     url = url.replace('url(','').replace(')','').replace(/\"/gi, "");
     let img = $('<img>');
     img.attr({ 'src': url });
 
-    // this kinda looks right?
     HELD.append(img);
     b.append(HELD);
 
     holdingItem = true;
-  };
 
-  //if holding item, and in items divs, switch items
-
-  if (mouseStatus.holding && target.classList.contains('item')) {
+    // switch items
+  } else if (!mouseStatus.erase && mouseStatus.holding && target.classList.contains('item')) {
+    console.log("switch items");
     HELD.empty();
     let url = target.style.backgroundImage;
     url = url.replace('url(','').replace(')','').replace(/\"/gi, "");
@@ -262,48 +284,30 @@ function evalClickEvent(target) {
     HELD.append(img);
     b.append(HELD);
     holdingItem = true;
-  };
 
-  //if in garden area, and holding item, drop copy of item
-
-  if (mouseStatus.holding && target.classList.contains('inner')) {
+    // drop item in garden
+  } else if (!mouseStatus.erase && mouseStatus.holding && target.classList.contains('inner')) {
     console.log("drop item");
     let url = $('#held-item').find('img').attr('src');
     //
     url = url.replace('url(','').replace(')','').replace(/\"/gi, "");
     //
-
     let img = $('<img>');
     img.attr({'src': url});
     let gardenItem = $('<div class="garden-item">');
+    gardenItem.attr({'onclick': 'evalEraseEvent(this)'});
     gardenItem.append(img);
-
-    // this line should give mouseposition in gspace instead
-    // how to get that considering scrolling?
-    // $("#something").click(function(e){
-/////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////// lookey here
-
-//    var parentOffset = $(this).parent().offset();
-//    //or $(this).offset(); if you really just want the current element's offset
-//    var relX = e.pageX - parentOffset.left;
-//    var relY = e.pageY - parentOffset.top;
-// });
-
-  // the e should be on mousemove event
+    // set position of dropped item
     let relPos = {
       left: mouseStatus.xPos - Gspace.offset().left,
       top : mouseStatus.yPos - Gspace.offset().top
     };
-
     gardenItem.css({
       'position':'absolute',
       'left': relPos.left - 25,
       'top':  relPos.top - 25
     });
-
     Gspace.append(gardenItem);
-
     //////////////////////////////////////////////////////////////////////////
     // this is the most important part
     // build obj to add to gardenData, and later send it to server
@@ -319,6 +323,19 @@ function evalClickEvent(target) {
 
     appUpdateData();
 
+    // erase garden item  //////// target.classList.contains('garden-item') is not true here
+  } else if (mouseStatus.erase && target.classList.contains('garden-item')){
+    console.log(target);
+    let obj = JSON.stringify(mouseStatus);
+    console.log("mouseStatus = " + obj + "in erase condition ");
+    console.log("erase target");
+
+    // send error info
+  } else {
+    let obj = JSON.stringify(mouseStatus);
+    console.log(target);
+    console.log("mouseStatus = " + obj);
+    console.log("you fucked up");
   }
 } //eval click event
 

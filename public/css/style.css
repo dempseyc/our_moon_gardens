@@ -58,6 +58,12 @@ body{
     height: 1200px;
     width: 2000px;
 }
+
+.scrollbar-container .inner p {
+    display: block;
+    width: 70%;
+}
+
 ::-webkit-scrollbar {
     background: transparent;
 }
