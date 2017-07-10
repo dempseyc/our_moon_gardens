@@ -87,6 +87,8 @@ let b = $('body');
 
   // this guys width is 2000px his height is 1200px btw, i'm talking about Mr. Gspace
 let Gspace = $('#garden-space');
+let GspaceCont = $('.scrollbar-container');
+
 let HELD = $('<div id="held-item">');  // instantiating this element for append to b later
 
 // the "this" target should be either an item or the Gspace
@@ -267,17 +269,37 @@ function evalClickEvent(target) {
   if (mouseStatus.holding && target.classList.contains('inner')) {
     console.log("drop item");
     let url = $('#held-item').find('img').attr('src');
+    //
     url = url.replace('url(','').replace(')','').replace(/\"/gi, "");
+    //
+
     let img = $('<img>');
     img.attr({'src': url});
     let gardenItem = $('<div class="garden-item">');
     gardenItem.append(img);
 
     // this line should give mouseposition in gspace instead
+    // how to get that considering scrolling?
+    // $("#something").click(function(e){
+/////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////// lookey here
+
+//    var parentOffset = $(this).parent().offset();
+//    //or $(this).offset(); if you really just want the current element's offset
+//    var relX = e.pageX - parentOffset.left;
+//    var relY = e.pageY - parentOffset.top;
+// });
+
+  // the e should be on mousemove event
+    let relPos = {
+      left: mouseStatus.xPos - Gspace.offset().left,
+      top : mouseStatus.yPos - Gspace.offset().top
+    };
+
     gardenItem.css({
       'position':'absolute',
-      'left': mouseStatus.xPos+'px',
-      'top': mouseStatus.yPos+'px'
+      'left': relPos.left - 25,
+      'top':  relPos.top - 25
     });
 
     Gspace.append(gardenItem);
