@@ -175,8 +175,26 @@ droppableGiphyItems = [];
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-let page = 0;
-let theForm = $('#giphy-search');
+let TheForm = $('#giphy-search');
+let input = "";
+let Page = $('.giphy-page');
+let offsetReturn = Number(Page.text());
+let Back = $('.giphy-back');
+let Forward = $('.giphy-forward');
+
+Back.click(function(){
+  if (offsetReturn > 0) {
+    offsetReturn--;
+    Page.text(offsetReturn);
+  }
+});
+Forward.click(function(){
+  input = $('#search').val();
+  if (input) {
+    offsetReturn++;
+    Page.text(offsetReturn);
+  }
+});
 
 let JQgiphyItems = [
 $('.giphy-item1'),
@@ -195,10 +213,12 @@ JQgiphyItems.forEach(function (item, idx){
 });
 
 //user has made a giphy search stickers only
-theForm.submit(function(event){
+TheForm.submit(function(event){
+  input = $('#search').val();
   event.preventDefault();
-  let input = $('#search-form').val();
-  callGiphyAPI(input,page);
+  if (input) {
+    callGiphyAPI(input,Page.text());
+  }
 });
 
 // need to add page argument for offset.
@@ -207,6 +227,7 @@ theForm.submit(function(event){
 //// how shall we return the width of the gif?
 
 function callGiphyAPI (searchterm,offset) {
+  offset *= 9;
   let key = "dc6zaTOxFJmzC";
   let URL = "http://api.giphy.com/v1/stickers/search?q="+searchterm+"&offset="+offset+"&api_key="+key;
      $.ajax(URL, {  //howcome this syntax works for me and no other does?
