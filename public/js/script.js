@@ -231,33 +231,31 @@ function callGiphyAPI (searchterm,offset) {
      });
 }
 
-// even if I give each child an id, how will they be targeted on the click event?  it would make sense to break this evalClickEvent function into separate functions... but it's not clear to me how this would solve this problem of targeted click events.
-function evalEraseEvent(e) {
-  e.stopPropagation;
-}
-
 function evalClickEvent(target) {
 
     // go back to normal pointer state
   if (mouseStatus.erase && target.classList.contains('erase-mode')) {
     console.log("unerase mode");
+    HELD.empty();
     mouseStatus.holding = false;
     mouseStatus.erase = false;
     Eraser.css('color', '#FFF');
     $('.garden-item').each(function (){
-      $(this).attr({'pointer-events': 'none'});
+      $(this).css({'pointer-events': 'none'});
     });
+    Gspace.css({'pointer-events': 'all'});
 
     // go to erase mode
   } else if (!mouseStatus.erase && target.classList.contains('erase-mode')) {
     console.log("erase mode");
-    HELD.remove();
+    HELD.empty();
     mouseStatus.holding = false;
     mouseStatus.erase = true;
     Eraser.css('color', '#F00');  //turns
     $('.garden-item').each(function (){
-      $(this).attr({'pointer-events': 'all'});
+      $(this).css({'pointer-events': 'all'});
     });
+    Gspace.css({'pointer-events': 'none'});
 
     // pickup item  // this condition is failing
   } else if (!mouseStatus.erase && !mouseStatus.holding && target.classList.contains('item')) {
@@ -295,7 +293,7 @@ function evalClickEvent(target) {
     let img = $('<img>');
     img.attr({'src': url});
     let gardenItem = $('<div class="garden-item">');
-    gardenItem.attr({'onclick': 'evalEraseEvent(this)'});
+    gardenItem.attr({'onclick': 'evalClickEvent(this)'});
     gardenItem.append(img);
     // set position of dropped item
     let relPos = {
@@ -329,6 +327,7 @@ function evalClickEvent(target) {
     let obj = JSON.stringify(mouseStatus);
     console.log("mouseStatus = " + obj + "in erase condition ");
     console.log("erase target");
+    target.remove();
 
     // send error info
   } else {

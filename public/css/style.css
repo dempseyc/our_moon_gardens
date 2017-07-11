@@ -59,9 +59,8 @@ body{
     width: 2000px;
 }
 
-.scrollbar-container .inner p {
-    display: block;
-    width: 70%;
+.inner {
+  pointer-events: all;
 }
 
 ::-webkit-scrollbar {
