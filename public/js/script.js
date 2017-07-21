@@ -25,39 +25,39 @@ let droppableItems =
 [
 {
   name: 'stepstone',
-  url: '../../public/images/stepstone.png'
+  url: '/images/stepstone.png'
 },
 {
   name: 'puddle',
-  url: '../../public/images/puddle.png'
+  url: '/images/puddle.png'
 },
 {
   name: 'bigrocks',
-  url: '../../public/images/bigrocks.png'
+  url: '/images/bigrocks.png'
 },
 {
   name: 'verticalbarrier',
-  url: '../../public/images/verticalbarrier.png'
+  url: '/images/verticalbarrier.png'
 },
 {
   name: 'horizontalbarrier',
-  url: '../../public/images/horizontalbarrier.png'
+  url: '/images/horizontalbarrier.png'
 },
 {
   name: 'squarehedges',
-  url: '../../public/images/squarehedges.png'
+  url: '/images/squarehedges.png'
 },
 {
   name: 'birdbath',
-  url: '../../public/images/birdbath.png'
+  url: '/images/birdbath.png'
 },
 {
   name: 'masonry',
-  url: '../../public/images/masonry.png'
+  url: '/images/masonry.png'
 },
 {
   name: 'shrubbery',
-  url: '../../public/images/shrubbery.png'
+  url: '/images/shrubbery.png'
 }
 ];
 

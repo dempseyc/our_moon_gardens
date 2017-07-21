@@ -19,7 +19,7 @@
                 <label for= "inputPassword">Password</label>
                   <input name= "password" type= "password" id= "inputPassword" placeholder= "password">
                 <label for= "nameGarden">Garden Name</label>
-                  <input name= "garden-name" type= "text" id= "inputGardenName" placeholder= "MyMoonGaardenOne">
+                  <input name= "garden_name" type= "text" id= "inputGardenName" placeholder= "MyMoonGaardenOne">
                 <button type= "submit">Create User</button>
               </form>
             </fieldset>
@@ -30,7 +30,7 @@
         <!-- already logged in -->
         {{#logged_in}}
         <p>You are already logged in, {{handle}}..</p>
-        <a href= "/garden/{{garden_id}}"></a>
+        <a href= "/garden/{{garden_id}}">{{handle}}'s Garden</a>
         {{/logged_in}}
 
     </div>

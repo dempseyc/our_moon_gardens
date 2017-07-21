@@ -35,8 +35,10 @@ app.get('/', function(req, res){
       "garden_id": user.garden_id,
       "handle": user.handle
     };
+    console.log("user session up");
     res.render('index', data);
   } else {
+    console.log("user session not up");
     res.render('index');
   }
 });
@@ -68,22 +70,31 @@ app.get('/signup', function(req, res){
 
 
 app.post('/signup', function(req, res){
-  let newGarden = {};
+  let newGarden = "{}";
   let birthday = 0;
-  let data = req.body; //doesn't look right
+  let bod = req.body;
   let auth_error = "Authorization Failed: Invalid email/password";
-  bcrypt
-    .hash(data.password, 10, function(err, hash){
-      db
-      .one("INSERT INTO users (email, password_digest, handle) VALUES ($1, $2, $3) returning id", [data.email, hash, data.handle])
-      // .one("INSERT INTO gardens (garden_name, garden_owner, contents, birthday)   VALUES($1,$2,$3,$4)", [])
-      // how do i get the users' garden ids to match garden ids?
-      .catch(function(e){
-        res.send('Failed to create user and/or garden: ' + e);
+  // let gard_id;
+
+  db
+    .one("INSERT INTO gardens (garden_name, garden_owner, contents, birthday)   VALUES($1,$2,$3,$4) returning *", [bod.garden_name, bod.handle, newGarden, birthday])
+    .catch(function(e){
+        res.send('Failed to create garden: ' + e);
       })
-      .then(function(data){
-        res.redirect('/');
-      });
+    .then(function(data){
+      // gard_id = data.id;
+      bcrypt
+        .hash(bod.password, 10, function(err, hash){
+          db
+          .one("INSERT INTO users (email, password_digest, handle, garden_id) VALUES ($1, $2, $3, $4) returning *", [bod.email, hash, bod.handle, data.id])
+          .catch(function(e){
+              res.send('Failed to create user: ' + e);
+          })
+          .then(function(data){
+              console.log(data);
+              res.redirect('/garden/'+data.garden_id);
+          });
+        });
     });
 });
 
