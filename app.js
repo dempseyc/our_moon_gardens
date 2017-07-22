@@ -49,9 +49,6 @@ app.post('/login', function(req, res){
 
   db
     .one("SELECT * FROM users WHERE email = $1", [data.email])
-    .catch(function(){
-      res.send(auth_error);
-    })
     .then(function(user){   //here
       bcrypt.compare(data.password, user.password_digest, function(err, cmp){
         if(cmp){
@@ -60,8 +57,11 @@ app.post('/login', function(req, res){
         } else {
           res.send(auth_error);
         }
-      });
-    });
+      })
+    })
+    .catch(function(){
+      res.send(auth_error);
+    })
 });
 
 app.get('/signup', function(req, res){
@@ -116,16 +116,44 @@ app.get('/logout', function(req, res){
 
 app.get('/garden/:id', function(req, res){
   let user = req.session.user;
-  if(user){
-    let data = {
-      "logged_in": true,
-      "garden_id": user.garden_id,
-      "handle": user.handle
-    };
-    res.render('garden/show', data);
-  } else {
-    res.render('index');
-  };
+  console.log(user.garden_id);
+  db
+    .one("SELECT * FROM gardens WHERE id = $1", [user.garden_id])
+    .then(function(data){
+      if(user){
+        // data.logged_in = true;
+        // data.handle = user.handle;
+        console.log(data);
+        res.render('garden/show', data);
+      } else {
+        res.render('index');
+      };
+    })
+    .catch(function(e) {
+      res.send('Failed to get garden contents ' + e);
+    })
+});
+
+app.put('garden/:id', function(req,res){
+  db
+    .none("UPDATE gardens SET contents = $1 WHERE id = $2",
+      [req.body.contents, req.params.id])
+    .catch(function(){
+      res.send('Failed to update garden.');
+    })
+    .then(function() {
+      let user = req.session.user;
+      if(user) {
+        let data = {
+          "logged_in": true,
+          "garden_id": user.garden_id,
+          "handle": user.handle
+        };
+        res.render('garden/show', data);
+      } else {
+        res.render('index');
+      }
+  });
 });
 
 

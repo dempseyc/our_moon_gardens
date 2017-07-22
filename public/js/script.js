@@ -1,22 +1,3 @@
-//// thinking out how this should work
-//
-// we have functs for picking up and dropping items
-// we have a funct for erasing items
-//// actually, we don't have a funct for that it's just a dream at this point
-////////// what we might do is switch the mouseStatus to erase
-////////// then be able to somehow remove particular divs from the Gspace
-////////// how we will achieve this is yet to be discovered
-////////// that it will be done is an eventuality
-//
-// we have a funct for hitting giphy api which includes offset meaning the next 8 results
-//
-////////// let's do that next in the implementation because that will be really fun
-//////////
-// we have functs for changing the status of the mouse from adding, to changing paintbrush, to erasing, to saving changes in the data
-// we have a funct to build the string to be saved in server
-// organize better into utilities, interactions, and apis
-// the big built string should be stored in a hidden form regularly... when user saves, the body will be parsed and the string will be updated in database
-
 /////////////////////////////////////////////////////////////////////////////////////////////
 // DOM BUILDING FE
 // LIST OF USEABLE ITEMS
@@ -97,9 +78,7 @@ let HELD = $('<div id="held-item">');  // instantiating this element for append 
 Gspace.attr({'onClick': 'evalClickEvent(this)'});
 Eraser.attr({'onClick': 'evalClickEvent(this)'});
 
-
 /////////////////////////////////////////////////////////////////////////////////////////////
-// UTILITIES
 
 // the main utility at work now
 let mouseStatus = {
@@ -130,10 +109,6 @@ b.on('mousemove', function(e){
 Gspace.on('mousemove', function(e) {
   updateMouseStatus(e);
 });
-
-
-// END UTILITIES
-//////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // USER GARDEN API PART
@@ -176,6 +151,7 @@ droppableGiphyItems = [];
 
 
 let TheForm = $('#giphy-search');
+let contentField = $('#contents');
 let input = "";
 let Page = $('.giphy-page');
 let offsetReturn = Number(Page.text());
@@ -308,25 +284,30 @@ function evalClickEvent(target) {
   } else if (!mouseStatus.erase && mouseStatus.holding && target.classList.contains('inner')) {
     console.log("drop item");
     let url = $('#held-item').find('img').attr('src');
-    //
     url = url.replace('url(','').replace(')','').replace(/\"/gi, "");
-    //
-    let img = $('<img>');
-    img.attr({'src': url});
-    let gardenItem = $('<div class="garden-item">');
-    gardenItem.attr({'onclick': 'evalClickEvent(this)'});
-    gardenItem.append(img);
-    // set position of dropped item
+
     let relPos = {
-      left: mouseStatus.xPos - Gspace.offset().left,
-      top : mouseStatus.yPos - Gspace.offset().top
+      left: mouseStatus.xPos - Gspace.offset().left - 25,
+      top : mouseStatus.yPos - Gspace.offset().top - 25
     };
-    gardenItem.css({
-      'position':'absolute',
-      'left': relPos.left - 25,
-      'top':  relPos.top - 25
-    });
-    Gspace.append(gardenItem);
+
+    let dropItem = function (url,x,y) {
+
+      let img = $('<img>');
+      img.attr({'src': url});
+      let gardenItem = $('<div class="garden-item">');
+      gardenItem.attr({'onclick': 'evalClickEvent(this)'});
+      gardenItem.append(img);
+      // set position of dropped item
+
+      gardenItem.css({
+        'position':'absolute',
+        'left': x,
+        'top':  y
+      });
+      Gspace.append(gardenItem);
+    }
+
     //////////////////////////////////////////////////////////////////////////
     // this is the most important part
     // build obj to add to gardenData, and later send it to server
@@ -334,12 +315,15 @@ function evalClickEvent(target) {
       let newGardenDataItem = {};
       newGardenDataItem.url = url;
       // replace these with garden locations /////////////////////////////////
-      // newGardenDataItem.locx = location[0];
-      // newGardenDataItem.locy = location[1];
+      newGardenDataItem.locx = relPos.left;
+      newGardenDataItem.locy = relPos.top;
       gardenData.data.push(newGardenDataItem);
-      console.log(gardenData.data);
+      let str = JSON.stringify(gardenData)
+      contentField.text(str);
+      console.log(str);
     };
 
+    dropItem(url, relPos.left, relPos.top);
     appUpdateData();
 
     // erase garden item  //////// target.classList.contains('garden-item') is not true here
@@ -358,6 +342,11 @@ function evalClickEvent(target) {
     console.log("you fucked up");
   }
 } //eval click event
+
+window.onload = function () {
+  //hit the database for gardendata and make a loop calling dropItem multiple times
+  console.log(contentField.val());
+}
 
 //// old code
 
@@ -381,6 +370,6 @@ function evalClickEvent(target) {
 //   return Math.floor(Math.random() * (max + 1 - min)) + min;
 // };
 //
-  //// still a good guy though, good utility to keep bouncing around in different projs
+//// still a good guy though, good utility to keep bouncing around in different projs
 ////////////////////////////////////   should be included in a craig.js
 

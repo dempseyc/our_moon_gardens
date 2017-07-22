@@ -12,7 +12,12 @@
       <ul>
         <li><span>{Llewellyn Garden}</span></li>  <!-- {{garden_name}} -->
         <li>[username]</li>
-        <li>[$AVE CHANGE$]</li>
+        <li>
+          <form name= "contents" action= "/garden/{{garden_id}}" method= "put">
+            <input id= "contents" type="hidden" />
+            <button type= "submit">[$AVE CHANGE$]</button>
+          </form>
+        </li>
         <li>[/logout?]</li>
         <li><img src= "/images/our_moon_gardens_logo.gif" alt= "mymoongaardenlogo" id= "logo"></li>
       </ul>
