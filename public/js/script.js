@@ -115,7 +115,20 @@ Gspace.on('mousemove', function(e) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
-
+let genUniqueName = function (length) {
+  var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
+  if (! length) {
+      length = Math.floor(Math.random() * chars.length);
+  }
+  var str = '';
+  for (var i = 0; i < length; i++) {
+      str += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return str;
+}
+let currUniqueName = '';
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 // change this from params of the route
 userGardenID = '0';
@@ -211,7 +224,8 @@ let dropItem = function (url,x,y) {
   let img = $('<img>');
   img.attr({'src': url});
   let gardenItem = $('<div class="garden-item">');
-
+  currUniqueName = genUniqueName(4);
+  gardenItem.addClass(currUniqueName);
   gardenItem.attr({'onclick': 'evalClickEvent(this)'});
   gardenItem.append(img);
 
@@ -224,8 +238,9 @@ let dropItem = function (url,x,y) {
   Gspace.append(gardenItem);
 };
 
-let appUpdateData = function (url,x,y) {
+let appAddData = function (url,x,y) {
   let newGardenDataItem = {};
+  newGardenDataItem.name = currUniqueName;
   newGardenDataItem.url = url;
   newGardenDataItem.locx = x;
   newGardenDataItem.locy = y;
@@ -235,6 +250,16 @@ let appUpdateData = function (url,x,y) {
   contentField.val(str);
   console.log(str);
 };
+
+let appRemoveData = function (idx) {
+  if (idx > -1) {
+    gardenData.data.splice(idx, 1);
+  }
+  //use jquery to update DOM form being submitted to server script
+  let str = JSON.stringify(gardenData);
+  contentField.val(str);
+  console.log(str);
+}
 
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
@@ -255,16 +280,13 @@ function evalClickEvent(target) {
     });
     Gspace.css({'pointer-events': 'all'});
 
-//////////////////////////////////////////////////////////////////////////////////////
-    // need to add erase mode function to update app
-//////////////////////////////////////////////////////////////////////////////////////
     // go to erase mode
   } else if (!mouseStatus.erase && target.classList.contains('erase-mode')) {
     console.log("erase mode");
     HELD.empty();
     mouseStatus.holding = false;
     mouseStatus.erase = true;
-    Eraser.css('color', '#F00');  //turns
+    Eraser.css('color', '#F00');  //eraser selection turns red
     $('.garden-item').each(function (){
       $(this).css({'pointer-events': 'all'});
     });
@@ -312,16 +334,22 @@ function evalClickEvent(target) {
     // this is the most important part
     // build obj to add to gardenData, and send it to server
     dropItem(url, relPos.left, relPos.top);
-    appUpdateData(url, relPos.left, relPos.top);
+    appAddData(url, relPos.left, relPos.top);
 
     // erase garden item
   } else if (mouseStatus.erase && target.classList.contains('garden-item')){
-    console.log(target);
+    console.log(target.classList[1]+ " to erase");
     let obj = JSON.stringify(mouseStatus);
     console.log("mouseStatus = " + obj + "in erase condition ");
     console.log("erase target");
-    target.remove();
 
+    //remove from array and re-assign jquery field
+    let targetIndex = gardenData.data.map(function(x) {
+      return x.name;
+    }).indexOf(target.classList[1]);
+    appRemoveData(targetIndex);
+
+    target.remove();
     // send error info
   } else {
     let obj = JSON.stringify(mouseStatus);
@@ -339,7 +367,7 @@ let data = JSON.parse(contentField.val());
 let loadItems = function(arr) {
   arr.forEach((item) => {
     dropItem(item.url,item.locx,item.locy);
-    appUpdateData(item.url,item.locx,item.locy);
+    appAddData(item.url,item.locx,item.locy);
   })
 };
 
