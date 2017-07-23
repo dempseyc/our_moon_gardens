@@ -1,4 +1,5 @@
-/////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
 // DOM BUILDING FE
 // LIST OF USEABLE ITEMS
 
@@ -62,11 +63,13 @@ JQitems.forEach((handle, idx) => {
   handle.attr({'onClick': 'evalClickEvent(this)'});
 });
 
-let contentField = $('#contents');
 
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
 //// CACHE DOM
 
 let b = $('body');
+let contentField = $('#contents');
 
   // this guys width is 2000px his height is 1200px btw, i'm talking about Mr. Gspace
 let Gspace = $('#garden-space');
@@ -75,13 +78,12 @@ let Eraser = $('.erase-mode');
 
 let HELD = $('<div id="held-item">');  // instantiating this element for append to b later
 
-// the "this" target should be either an item or the Gspace
-// the "evalClickEvent(this)"" feels like a good funct so far in this adventure tho
+// the "this" target should be an item  OR eraser OR the Gspace
 Gspace.attr({'onClick': 'evalClickEvent(this)'});
 Eraser.attr({'onClick': 'evalClickEvent(this)'});
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
 // the main utility at work now
 let mouseStatus = {
   xPos: 0,
@@ -90,7 +92,6 @@ let mouseStatus = {
   erase: false
 };
 
-//// clientX and clientY make no difference, but what I want is the return of the absolute position of the mouse within the Gspace..   is that so much to ask for????
 let updateMouseStatus = function(e) {
   mouseStatus.xPos = e.pageX;
   mouseStatus.yPos = e.pageY;
@@ -113,28 +114,26 @@ Gspace.on('mousemove', function(e) {
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// USER GARDEN API PART
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // change this from params of the route
 userGardenID = '0';
 
-// this obj will be populated by data from ajax call, and stored on server on save, but for now is built only by this script, still have to write the parts where it is gotten and updated
 let gardenData = {
   id: userGardenID,
-  data: []  //array contains items in the form {locx:'number',locy:'number',url:'aURL'}
+  data: []  //array contains items in the form {url:'aURL', locx:'number',locy:'number'}
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // GIPHY API PART
 
 droppableGiphyItems = [];
 
 // may need a little function in here to handle larger widths
-// def can get width from droppableGiphyItems[i].width ??
+// can get width from droppableGiphyItems[i].width ??
 //////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 let TheForm = $('#giphy-search');
 let Ginput = "";
@@ -173,7 +172,7 @@ JQgiphyItems.forEach((item, idx) =>{
   item.attr({'onclick': 'evalClickEvent(this)'});  //the 'this' reference works, but who knows why?
 });
 
-//user has made a giphy search stickers only
+//user has made a giphy stickers search
 TheForm.submit(function(event){
   Ginput = $('#search').val();
   event.preventDefault();
@@ -181,11 +180,6 @@ TheForm.submit(function(event){
     callGiphyAPI(Ginput,Page.text());
   }
 });
-
-// need to add page argument for offset.
-//// also would like to return width of gif and resize for app ********************************
-//// ******************************************************************************************
-//// how shall we return the width of the gif?
 
 function callGiphyAPI (searchterm,offset) {
   offset *= 9;
@@ -217,11 +211,11 @@ let dropItem = function (url,x,y) {
   let img = $('<img>');
   img.attr({'src': url});
   let gardenItem = $('<div class="garden-item">');
-  //dubious because this is in evalclickevent?
+
   gardenItem.attr({'onclick': 'evalClickEvent(this)'});
   gardenItem.append(img);
-  // set position of dropped item
 
+  // set position of dropped item
   gardenItem.css({
     'position':'absolute',
     'left': x,
@@ -233,14 +227,19 @@ let dropItem = function (url,x,y) {
 let appUpdateData = function (url,x,y) {
   let newGardenDataItem = {};
   newGardenDataItem.url = url;
-  // replace these with garden locations /////////////////////////////////
   newGardenDataItem.locx = x;
   newGardenDataItem.locy = y;
   gardenData.data.push(newGardenDataItem);
+  //use jquery to update DOM form being submitted to server script
   let str = JSON.stringify(gardenData);
   contentField.val(str);
   console.log(str);
 };
+
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+// this is part of the main utility
 
 function evalClickEvent(target) {
 
@@ -256,6 +255,9 @@ function evalClickEvent(target) {
     });
     Gspace.css({'pointer-events': 'all'});
 
+//////////////////////////////////////////////////////////////////////////////////////
+    // need to add erase mode function to update app
+//////////////////////////////////////////////////////////////////////////////////////
     // go to erase mode
   } else if (!mouseStatus.erase && target.classList.contains('erase-mode')) {
     console.log("erase mode");
@@ -268,7 +270,7 @@ function evalClickEvent(target) {
     });
     Gspace.css({'pointer-events': 'none'});
 
-    // pickup item  // this condition is failing
+    // pickup item
   } else if (!mouseStatus.erase && !mouseStatus.holding && target.classList.contains('item')) {
     mouseStatus.holding = true;
     mouseStatus.erase = false;
@@ -305,13 +307,14 @@ function evalClickEvent(target) {
       top : mouseStatus.yPos - Gspace.offset().top - 25
     };
 
-    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////
     // this is the most important part
-    // build obj to add to gardenData, and later send it to server
+    // build obj to add to gardenData, and send it to server
     dropItem(url, relPos.left, relPos.top);
     appUpdateData(url, relPos.left, relPos.top);
 
-    // erase garden item  //////// target.classList.contains('garden-item') is not true here
+    // erase garden item
   } else if (mouseStatus.erase && target.classList.contains('garden-item')){
     console.log(target);
     let obj = JSON.stringify(mouseStatus);
@@ -327,6 +330,10 @@ function evalClickEvent(target) {
   }
 } //eval click event
 
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+// LOAD DATA FROM DB THROUGH jquery FORM
+//
 let data = JSON.parse(contentField.val());
 
 let loadItems = function(arr) {
