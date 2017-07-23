@@ -133,7 +133,6 @@ app.get('/garden/:id', function(req, res){
 });
 
 // works with post
-// does it work with put?
 app.post('/garden', function(req,res) {
   let user = req.session.user;
   if (user) { console.log("user ok"); } else { console.log("no user"); }

@@ -55,12 +55,14 @@ $('.item8'),
 $('.item9')
 ];
 
-JQitems.forEach(function (handle, idx) {
+JQitems.forEach((handle, idx) => {
   url = droppableItems[idx].url;
   droppableItems[idx].jqhandle = handle;
   handle.css('background-image', 'url('+url+')');
   handle.attr({'onClick': 'evalClickEvent(this)'});
 });
+
+let contentField = $('#contents');
 
 //// CACHE DOM
 
@@ -122,22 +124,6 @@ let gardenData = {
   data: []  //array contains items in the form {locx:'number',locy:'number',url:'aURL'}
 };
 
-// callGardenAPI(userGardenID);
-
-// function callGardenAPI (gardenID) {
-//   // this should route to a get in app.js that responds with the gardendata column of the correlated gardenID....
-//   let URL = "#";
-//      $.ajax(URL, {
-//       success: function(gardenInDB) {
-//         gardenData.data = gardenInDB;  //maybe do this ????
-//         console.log(gardenInDB);
-//       },
-//       error: function() {
-//          console.log('An error occurred in garden API call');
-//       }
-//      });
-// }
-
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -151,7 +137,6 @@ droppableGiphyItems = [];
 
 
 let TheForm = $('#giphy-search');
-let contentField = $('#contents');
 let Ginput = "";
 let Page = $('.giphy-page');
 let offsetReturn = Number(Page.text());
@@ -184,7 +169,7 @@ $('.giphy-item8'),
 $('.giphy-item9')
 ];
 
-JQgiphyItems.forEach(function (item, idx){
+JQgiphyItems.forEach((item, idx) =>{
   item.attr({'onclick': 'evalClickEvent(this)'});  //the 'this' reference works, but who knows why?
 });
 
@@ -227,6 +212,35 @@ function callGiphyAPI (searchterm,offset) {
       }
      });
 }
+
+let dropItem = function (url,x,y) {
+  let img = $('<img>');
+  img.attr({'src': url});
+  let gardenItem = $('<div class="garden-item">');
+  //dubious because this is in evalclickevent?
+  gardenItem.attr({'onclick': 'evalClickEvent(this)'});
+  gardenItem.append(img);
+  // set position of dropped item
+
+  gardenItem.css({
+    'position':'absolute',
+    'left': x,
+    'top':  y
+  });
+  Gspace.append(gardenItem);
+};
+
+let appUpdateData = function (url,x,y) {
+  let newGardenDataItem = {};
+  newGardenDataItem.url = url;
+  // replace these with garden locations /////////////////////////////////
+  newGardenDataItem.locx = x;
+  newGardenDataItem.locy = y;
+  gardenData.data.push(newGardenDataItem);
+  let str = JSON.stringify(gardenData);
+  contentField.val(str);
+  console.log(str);
+};
 
 function evalClickEvent(target) {
 
@@ -291,41 +305,11 @@ function evalClickEvent(target) {
       top : mouseStatus.yPos - Gspace.offset().top - 25
     };
 
-    let dropItem = function (url,x,y) {
-
-      let img = $('<img>');
-      img.attr({'src': url});
-      let gardenItem = $('<div class="garden-item">');
-      //dubious because this is in evalclickevent?
-      gardenItem.attr({'onclick': 'evalClickEvent(this)'});
-      gardenItem.append(img);
-      // set position of dropped item
-
-      gardenItem.css({
-        'position':'absolute',
-        'left': x,
-        'top':  y
-      });
-      Gspace.append(gardenItem);
-    }
-
     //////////////////////////////////////////////////////////////////////////
     // this is the most important part
     // build obj to add to gardenData, and later send it to server
-    let appUpdateData = function () {
-      let newGardenDataItem = {};
-      newGardenDataItem.url = url;
-      // replace these with garden locations /////////////////////////////////
-      newGardenDataItem.locx = relPos.left;
-      newGardenDataItem.locy = relPos.top;
-      gardenData.data.push(newGardenDataItem);
-      let str = JSON.stringify(gardenData);
-      contentField.val(str);
-      console.log(str);
-    };
-
     dropItem(url, relPos.left, relPos.top);
-    appUpdateData();
+    appUpdateData(url, relPos.left, relPos.top);
 
     // erase garden item  //////// target.classList.contains('garden-item') is not true here
   } else if (mouseStatus.erase && target.classList.contains('garden-item')){
@@ -343,13 +327,18 @@ function evalClickEvent(target) {
   }
 } //eval click event
 
-window.onload = function () {
-  let data = contentField.val();
-  //have to work from backend to frontend
+let data = JSON.parse(contentField.val());
 
+let loadItems = function(arr) {
+  arr.forEach((item) => {
+    dropItem(item.url,item.locx,item.locy);
+    appUpdateData(item.url,item.locx,item.locy);
+  })
+};
 
-  console.log(contentField.val() + " new load");
-}
+loadItems(data.data);
+
+console.log(contentField.val() + " new load");
 
 //// old code
 
