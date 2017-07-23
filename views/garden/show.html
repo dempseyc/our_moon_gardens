@@ -2,78 +2,78 @@
 <html>
 <head>
   <title>your moon garden</title>
-  <link rel= "stylesheet" type= "text/css" href= "/css/reset.css">
-  <link rel= "stylesheet" type= "text/css" href= "/css/style.css">
+  <link rel="stylesheet" type="text/css" href="/css/reset.css">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-  <div class= "main-container">
-    <div class= "nav">
+  <div class="main-container">
+    <div class="nav">
       <ul>
         <li><span>{Llewellyn Garden}</span></li>  <!-- {{garden_name}} -->
         <li>[username]</li>
         <li>
-          <form name= "contents" action= "/garden/{{garden_id}}" method= "put">
-            <input id= "contents" type="hidden" />
-            <button type= "submit">[$AVE CHANGE$]</button>
+          <form action="/garden" method="post">
+            <input id="contents" name="contents" type="hidden" value='{{contents}}' />
+            <button type="submit">[$AVE CHANGE$]</button>
           </form>
         </li>
         <li>[/logout?]</li>
-        <li><img src= "/images/our_moon_gardens_logo.gif" alt= "mymoongaardenlogo" id= "logo"></li>
+        <li><img src="/images/our_moon_gardens_logo.gif" alt="mymoongaardenlogo" id="logo"></li>
       </ul>
     </div>
 
-    <div class= "scrollbar-container">
-        <div id = "garden-space" class= "inner">
+    <div class="scrollbar-container">
+        <div id="garden-space" class="inner">
         </div>
     </div>
 
-    <div class= "item-container">
-      <div class= "items inner-box">
-        <div class= "item-header">
-          <div class= "erase-mode"> xERASEx </div>
+    <div class="item-container">
+      <div class="items inner-box">
+        <div class="item-header">
+          <div class="erase-mode"> xERASEx </div>
         </div>
-        <div class= "item item1"></div>
-        <div class= "item item2"></div>
-        <div class= "item item3"></div>
-        <div class= "item item4"></div>
-        <div class= "item item5"></div>
-        <div class= "item item6"></div>
-        <div class= "item item7"></div>
-        <div class= "item item8"></div>
-        <div class= "item item9"></div>
+        <div class="item item1"></div>
+        <div class="item item2"></div>
+        <div class="item item3"></div>
+        <div class="item item4"></div>
+        <div class="item item5"></div>
+        <div class="item item6"></div>
+        <div class="item item7"></div>
+        <div class="item item8"></div>
+        <div class="item item9"></div>
       </div>
 
 
-      <div class= "giphy-items inner-box">
-        <div class= "item-header">
+      <div class="giphy-items inner-box">
+        <div class="item-header">
           <form id="giphy-search" class="giphy-controls">
-            <input id= "search" name= "search" placeholder = "giphy it!" />
-<!--             <button id= "submitbutton" type= "submit">&#x2315</button> -->
-            <button class= "giphy-back" type= "submit"> < </button>
-            <button class= "giphy-page" type= "submit">0</button>
-            <button class= "giphy-forward" type= "submit"> > </button>
+            <input id="search" name="search" placeholder ="giphy it!" />
+<!--             <button id="submitbutton" type="submit">&#x2315</button> -->
+            <button class="giphy-back" type="submit"> < </button>
+            <button class="giphy-page" type="submit">0</button>
+            <button class="giphy-forward" type="submit"> > </button>
           </form>
 
 
         </div> <!-- item-header -->
-        <div class= "item giphy-item1"></div>
-        <div class= "item giphy-item2"></div>
-        <div class= "item giphy-item3"></div>
-        <div class= "item giphy-item4"></div>
-        <div class= "item giphy-item5"></div>
-        <div class= "item giphy-item6"></div>
-        <div class= "item giphy-item7"></div>
-        <div class= "item giphy-item8"></div>
-        <div class= "item giphy-item9"></div>
+        <div class="item giphy-item1"></div>
+        <div class="item giphy-item2"></div>
+        <div class="item giphy-item3"></div>
+        <div class="item giphy-item4"></div>
+        <div class="item giphy-item5"></div>
+        <div class="item giphy-item6"></div>
+        <div class="item giphy-item7"></div>
+        <div class="item giphy-item8"></div>
+        <div class="item giphy-item9"></div>
       </div>
     </div> <!-- item-container -->
 
 
   </div> <!-- main-container -->
 
-  <script src= "/js/jquery.js" type= "text/javascript" charset= "utf-8"></script>
-  <script src= "/js/script.js" type= "text/javascript" charset= "utf-8"></script>
+  <script src="/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/js/script.js" type="text/javascript" charset="utf-8"></script>
 </body>
 
 

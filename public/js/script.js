@@ -152,7 +152,7 @@ droppableGiphyItems = [];
 
 let TheForm = $('#giphy-search');
 let contentField = $('#contents');
-let input = "";
+let Ginput = "";
 let Page = $('.giphy-page');
 let offsetReturn = Number(Page.text());
 let Back = $('.giphy-back');
@@ -165,8 +165,8 @@ Back.click(function(){
   }
 });
 Forward.click(function(){
-  input = $('#search').val();
-  if (input) {
+  Ginput = $('#search').val();
+  if (Ginput) {
     offsetReturn++;
     Page.text(offsetReturn);
   }
@@ -190,10 +190,10 @@ JQgiphyItems.forEach(function (item, idx){
 
 //user has made a giphy search stickers only
 TheForm.submit(function(event){
-  input = $('#search').val();
+  Ginput = $('#search').val();
   event.preventDefault();
-  if (input) {
-    callGiphyAPI(input,Page.text());
+  if (Ginput) {
+    callGiphyAPI(Ginput,Page.text());
   }
 });
 
@@ -296,6 +296,7 @@ function evalClickEvent(target) {
       let img = $('<img>');
       img.attr({'src': url});
       let gardenItem = $('<div class="garden-item">');
+      //dubious because this is in evalclickevent?
       gardenItem.attr({'onclick': 'evalClickEvent(this)'});
       gardenItem.append(img);
       // set position of dropped item
@@ -318,8 +319,8 @@ function evalClickEvent(target) {
       newGardenDataItem.locx = relPos.left;
       newGardenDataItem.locy = relPos.top;
       gardenData.data.push(newGardenDataItem);
-      let str = JSON.stringify(gardenData)
-      contentField.text(str);
+      let str = JSON.stringify(gardenData);
+      contentField.val(str);
       console.log(str);
     };
 
@@ -339,13 +340,15 @@ function evalClickEvent(target) {
     let obj = JSON.stringify(mouseStatus);
     console.log(target);
     console.log("mouseStatus = " + obj);
-    console.log("you fucked up");
   }
 } //eval click event
 
 window.onload = function () {
-  //hit the database for gardendata and make a loop calling dropItem multiple times
-  console.log(contentField.val());
+  let data = contentField.val();
+  //have to work from backend to frontend
+
+
+  console.log(contentField.val() + " new load");
 }
 
 //// old code

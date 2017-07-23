@@ -2,11 +2,11 @@ const express = require('express');
 const app = express();
 const pgp = require('pg-promise')();
 const mustacheExpress = require('mustache-express');
-const methodOverride = require('method-override')
 const bodyParser = require("body-parser");
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const salt = bcrypt.genSalt(10);
+const methodOverride = require('method-override');
 
 app.engine('html', mustacheExpress());
 app.set('view engine', 'html');
@@ -121,8 +121,6 @@ app.get('/garden/:id', function(req, res){
     .one("SELECT * FROM gardens WHERE id = $1", [user.garden_id])
     .then(function(data){
       if(user){
-        // data.logged_in = true;
-        // data.handle = user.handle;
         console.log(data);
         res.render('garden/show', data);
       } else {
@@ -134,42 +132,27 @@ app.get('/garden/:id', function(req, res){
     })
 });
 
-app.put('garden/:id', function(req,res){
+// works with post
+// does it work with put?
+app.post('/garden', function(req,res) {
+  let user = req.session.user;
+  if (user) { console.log("user ok"); } else { console.log("no user"); }
   db
     .none("UPDATE gardens SET contents = $1 WHERE id = $2",
-      [req.body.contents, req.params.id])
-    .catch(function(){
-      res.send('Failed to update garden.');
-    })
+      [req.body.contents, user.garden_id])
     .then(function() {
-      let user = req.session.user;
-      if(user) {
-        let data = {
-          "logged_in": true,
-          "garden_id": user.garden_id,
-          "handle": user.handle
-        };
-        res.render('garden/show', data);
-      } else {
-        res.render('index');
-      }
-  });
+      res.redirect('garden/show');
+    })
+    .catch(function(e) {
+      res.send('Failed to update garden contents ' + e);
+    })
 });
-
 
 app.listen(3000, function () {
   console.log('Server on port 3000.');
 });
 
 /////////////////////////////////////////////////////////////
-//notes thanks moe
-// //get is when you want to render an html page to a specific url
-// // '/foo' is the link you put after localhost:3000, so... localhost:3000/foo
-// app.get('/foo',function(request,response){
-//     response.render('bar');        //bar refers to the html file in your views folder
-// }
-// ​
-// ​
 // //post is when you want your server to receive the data submitted from a form:
 // <form method="post" action="/shoebill">
 //     <input type="text" name="coders"/>
