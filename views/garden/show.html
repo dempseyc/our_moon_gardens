@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>your moon garden</title>
+  <title>Our Moon Gardens</title>
   <link rel="stylesheet" type="text/css" href="/css/reset.css">
   <link rel="stylesheet" type="text/css" href="/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -10,15 +10,19 @@
   <div class="main-container">
     <div class="nav">
       <ul>
-        <li><span>{Llewellyn Garden}</span></li>  <!-- {{garden_name}} -->
-        <li>[username]</li>
+        <li><span>Llewellyn Garden</span></li>  <!-- {{garden_name}} -->
+        <li>{{handle}}</li>
         <li>
           <form action="/garden" method="post">
             <input id="contents" name="contents" type="hidden" value='{{contents}}' />
-            <button type="submit">[$AVE CHANGE$]</button>
+            <button type="submit">SAVE CHANGES</button>
           </form>
         </li>
-        <li>[/logout?]</li>
+        <li>
+        <form action="/logout" method="get">
+            <button type="submit">LOGOUT</button>
+        </form>
+        </li>
         <li><img src="/images/our_moon_gardens_logo.gif" alt="mymoongaardenlogo" id="logo"></li>
       </ul>
     </div>

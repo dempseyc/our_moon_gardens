@@ -122,6 +122,7 @@ app.get('/garden/:id', function(req, res){
     .then(function(data){
       if(user){
         console.log(data);
+        data.handle = req.session.user.handle;
         res.render('garden/show', data);
       } else {
         res.render('index');

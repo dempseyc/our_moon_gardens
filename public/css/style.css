@@ -2,10 +2,14 @@ html, body{
     color: #ACA;
     background-color: #336;
     position: static;
-    overflow: 'hidden',
-    height: '100%'
-    font-style: sans-serif;
+    overflow: 'hidden';
+    height: '100%';
+    font-family: 'Arial', sans-serif;
     font-size: 16px;
+}
+
+a {
+  color: #AAF;
 }
 
 /* based on *//*Reuben Godeau's Scrollbars*//*http://codepen.io/RG/pen/yqvmL*/
@@ -193,7 +197,7 @@ input {
 }
 
 .item {
-  background-size: cover;
+  background-size: 100%;
   display: inline-block;
   float: left;
   width: 32%;

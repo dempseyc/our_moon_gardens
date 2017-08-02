@@ -1,0 +1,37 @@
+html, body{
+    color: #ACA;
+    background-color: #336;
+    position: static;
+    overflow: 'hidden';
+    height: '100%';
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+}
+
+a {
+  color: #AAF;
+}
+
+.main-container{
+  position: static;
+  padding-top: 0.5rem;
+}
+
+#logo {
+/*  height: 5rem;
+  padding-top: 1.5rem;
+  padding-left: 0.5rem;*/
+}
+
+button {
+  font-size: 2em;
+  background: none;
+  border: none;
+  color: #FFF;
+  cursor: pointer;
+}
+
+input {
+  border: none;
+  margin: 2px;
+}
