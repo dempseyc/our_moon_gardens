@@ -10,33 +10,44 @@
   <div class="main-container">
     <div class="nav">
       <ul>
-        <li><span>Llewellyn Garden</span></li>  <!-- {{garden_name}} -->
-        <li>{{handle}}</li>
+        <li>
+         <form>
+          <button type="submit"><span>Llewellyn Garden</span>
+         </button>
+        </li>
+        <li>
+         <form>
+          <button type="submit">{{handle}}</button>
+         </form>
+        </li>
         <li>
           <form action="/garden" method="post">
-            <input id="contents" name="contents" type="hidden" value='{{contents}}' />
-            <button type="submit">SAVE CHANGES</button>
+           <input id="contents" name="contents" type="hidden" value='{{contents}}' />
+           <button type="submit">SAVE CHANGES</button>
           </form>
         </li>
         <li>
-        <form action="/logout" method="get">
+          <form action="/logout" method="get">
             <button type="submit">LOGOUT</button>
-        </form>
+          </form>
         </li>
-        <li><img src="/images/our_moon_gardens_logo.gif" alt="mymoongaardenlogo" id="logo"></li>
+        <li><img src="/images/omglogoneonsmall.png" alt="mymoongaardenlogo" id="logo">
+        </li>
       </ul>
     </div>
 
+<!-- you don't notice in the html but this is where the user does most stuff -->
     <div class="scrollbar-container">
         <div id="garden-space" class="inner">
         </div>
     </div>
 
+
     <div class="item-container">
+      <div class="erase-mode">
+        <div class="add">ADD</div><div class="erase">REMOVE</div>
+      </div>
       <div class="items inner-box">
-        <div class="item-header">
-          <div class="erase-mode"> xERASEx </div>
-        </div>
         <div class="item item1"></div>
         <div class="item item2"></div>
         <div class="item item3"></div>
@@ -48,7 +59,7 @@
         <div class="item item9"></div>
       </div>
 
-
+<!-- how does css handle this? -->
       <div class="giphy-items inner-box">
         <div class="item-header">
           <form id="giphy-search" class="giphy-controls">
@@ -59,7 +70,7 @@
             <button class="giphy-forward" type="submit"> > </button>
           </form>
 
-
+<!-- add notes jquery does what with this? -->
         </div> <!-- item-header -->
         <div class="item giphy-item1"></div>
         <div class="item giphy-item2"></div>

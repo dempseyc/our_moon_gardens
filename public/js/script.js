@@ -74,13 +74,17 @@ let contentField = $('#contents');
   // this guys width is 2000px his height is 1200px btw, i'm talking about Mr. Gspace
 let Gspace = $('#garden-space');
 let GspaceCont = $('.scrollbar-container');
-let Eraser = $('.erase-mode');
+let EraseAdd = $('.erase-mode')
+let Eraser = $('.erase');
+let Adder = $('.add');
 
 let HELD = $('<div id="held-item">');  // instantiating this element for append to b later
+let ItemBoxes = $('.inner-box');
+
 
 // the "this" target should be an item  OR eraser OR the Gspace
 Gspace.attr({'onClick': 'evalClickEvent(this)'});
-Eraser.attr({'onClick': 'evalClickEvent(this)'});
+EraseAdd.attr({'onClick': 'evalClickEvent(this)'});
 
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
@@ -270,12 +274,16 @@ function evalClickEvent(target) {
 
     // go back to normal pointer state
   if (mouseStatus.erase && target.classList.contains('erase-mode')) {
-    console.log("unerase mode");
+    console.log("add mode");
     HELD.empty();
     mouseStatus.holding = false;
     mouseStatus.erase = false;
-    Eraser.css('color', '#FFF');
-    $('.garden-item').each(function (){
+    Eraser.css('color', '#666');
+    Adder.css('color', '#FFF');
+    $('.inner-box').each(function() {
+      $(this).css({'opacity': '1'});
+    });
+    $('.garden-item').each(function() {
       $(this).css({'pointer-events': 'none'});
     });
     Gspace.css({'pointer-events': 'all'});
@@ -286,7 +294,12 @@ function evalClickEvent(target) {
     HELD.empty();
     mouseStatus.holding = false;
     mouseStatus.erase = true;
-    Eraser.css('color', '#F00');  //eraser selection turns red
+    //eraser selection turns red
+    Eraser.css('color', '#FFF');
+    Adder.css('color', '#666');
+    $('.inner-box').each(function() {
+      $(this).css({'opacity': '0'});
+    });
     $('.garden-item').each(function (){
       $(this).css({'pointer-events': 'all'});
     });

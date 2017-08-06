@@ -8,7 +8,8 @@
   </head>
   <body>
     <div class="main-container">
-        <h1>Our Moon Gardens</h1>
+        <div id="logo">
+        </div>
         <!-- logged in -->
         {{#logged_in}}
         <div class= "garden-icon">
@@ -24,10 +25,9 @@
 
         <!-- not logged in -->
         {{^logged_in}}
-        <div>
+        <div class="form">
             <form action="/login" method="post">
               <fieldset>
-                <legend>Login</legend>
                 <form>
                   <label for="inputEmail">Email</label>
                     <input name="email" type="text" id="inputEmail" placeholder="Email">
