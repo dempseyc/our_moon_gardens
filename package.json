@@ -4,6 +4,7 @@
   "description": "Auth stuff.",
   "main": "app.js",
   "engines": {
+    "npm": "v4.4.4",
     "node": "v7.8.0"
   },
   "scripts": {
