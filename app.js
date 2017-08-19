@@ -7,6 +7,7 @@ const session = require('express-session');
 const bcrypt = require('bcrypt');
 const salt = bcrypt.genSalt(10);
 const methodOverride = require('method-override');
+const pg = require('pg');
 
 app.engine('html', mustacheExpress());
 app.set('view engine', 'html');
@@ -27,10 +28,15 @@ var db = pgp('postgres://macbook@localhost:5432/moongarden');
 
 var port = process.env.PORT || 8080;
 
-var pg = require('pg');
+
 
 pg.defaults.ssl = true;
-pg.connect(process.env.DATABASE_URL, function(err, client) {
+
+var pool = new pg.Pool();
+
+// pool.end();
+
+pool.connect(process.env.DATABASE_URL, function(err, client) {
   if (err) throw err;
   console.log('Connected to postgres! Getting schemas...');
 
@@ -39,6 +45,7 @@ pg.connect(process.env.DATABASE_URL, function(err, client) {
     .on('row', function(row) {
       console.log(JSON.stringify(row));
     });
+    done();
 });
 //===========================================================
 
