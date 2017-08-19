@@ -25,6 +25,9 @@ app.use(session({
 
 var db = pgp('postgres://macbook@localhost:5432/moongarden');
 
+let port = process.env.PORT || 8080;
+
+
 //===========================================================
 
 app.get('/', function(req, res){
@@ -148,8 +151,8 @@ app.post('/garden', function(req,res) {
     })
 });
 
-app.listen(3000, function () {
-  console.log('Server on port 3000.');
+app.listen(port, function () {
+  console.log('Server on port by heroku.');
 });
 
 /////////////////////////////////////////////////////////////
