@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const pgp = require('pg-promise')();
+const pgp = require('pg-promise');  //()
 const mustacheExpress = require('mustache-express');
 const bodyParser = require("body-parser");
 const session = require('express-session');
@@ -35,8 +35,6 @@ pg.defaults.ssl = true;
 
 var pool = new pg.Pool();
 
-// pool.end();
-
 pool.connect(process.env.DATABASE_URL, function(err, client) {
   if (err) throw err;
   console.log('Connected to postgres! Getting schemas...');
@@ -48,6 +46,7 @@ pool.connect(process.env.DATABASE_URL, function(err, client) {
     });
     done();
 });
+pool.end();
 //===========================================================
 
 app.get('/', function(req, res){
