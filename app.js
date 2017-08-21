@@ -3,7 +3,7 @@ const app = express();
 const pgp = require('pg-promise')();  //()  ????
 const mustacheExpress = require('mustache-express');
 const bodyParser = require("body-parser");
-const session = require('express-session');
+const session = require('cookie-session');
 const bcrypt = require('bcrypt');
 const salt = bcrypt.genSalt(10);
 const methodOverride = require('method-override');
@@ -24,7 +24,7 @@ app.use(session({
   cookie: { secure: false }
 }))
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3000;
 
 // EITHER ONE?
 // var db = pgp('postgres://gjtqmpggmgeuzp:a223b0a98427908099bdde72706ea3af2929bd0f3dde6a1282696683a4b47e24@ec2-23-23-227-188.compute-1.amazonaws.com:5432/d1ev8ka848bkce') || pgp('postgres://macbook@localhost:5432/moongarden');
