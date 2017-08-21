@@ -24,13 +24,28 @@ app.use(session({
   cookie: { secure: false }
 }))
 
-// var db = pgp('postgres://macbook@localhost:5432/moongarden'); // LOCAL_URL
-
-var db = pgp('postgres://gjtqmpggmgeuzp:a223b0a98427908099bdde72706ea3af2929bd0f3dde6a1282696683a4b47e24@ec2-23-23-227-188.compute-1.amazonaws.com:5432/d1ev8ka848bkce'); //HEROKU_POSTGRESQL_CRIMSON_URL
-
-// var db = pgp('postgres://psswjeyveowiia:29981eb212d09990615f90fffdb394cecb2245cb500526f1a35aa9ac66057d20@ec2-54-163-237-25.compute-1.amazonaws.com:5432/d379c3686sgv6s'); // DATABASE_UR
-
 var port = process.env.PORT || 8080;
+var db = pgp('postgres://gjtqmpggmgeuzp:a223b0a98427908099bdde72706ea3af2929bd0f3dde6a1282696683a4b47e24@ec2-23-23-227-188.compute-1.amazonaws.com:5432/d1ev8ka848bkce') || pgp('postgres://macbook@localhost:5432/moongarden');
+
+//===========================================================
+//===========================================================
+//===========================================================
+//===========================================================
+// ENVIRONMENTS
+
+
+// LOCAL_URL
+// var db = pgp('postgres://macbook@localhost:5432/moongarden');
+
+//HEROKU_POSTGRESQL_CRIMSON_URL
+var db = pgp('postgres://gjtqmpggmgeuzp:a223b0a98427908099bdde72706ea3af2929bd0f3dde6a1282696683a4b47e24@ec2-23-23-227-188.compute-1.amazonaws.com:5432/d1ev8ka848bkce');
+
+// DATABASE_URL
+// var db = pgp('postgres://psswjeyveowiia:29981eb212d09990615f90fffdb394cecb2245cb500526f1a35aa9ac66057d20@ec2-54-163-237-25.compute-1.amazonaws.com:5432/d379c3686sgv6s');
+
+//===========================================================
+// CONNECTION
+
 
 // pg.defaults.ssl = true;
 
@@ -38,16 +53,24 @@ var port = process.env.PORT || 8080;
 
 // pool.connect(process.env.DATABASE_URL, function(err, client) {
 //   if (err) throw err;
-//   console.log('Connected to postgres! Getting schemas...');
-
-//   client
-//     .query('SELECT table_schema,table_name FROM information_schema.tables;')
-//     .on('row', function(row) {
-//       console.log(JSON.stringify(row));
-//     });
-//     done();
+//   console.log('');
 // });
 // pool.end();
+//===========================================================
+
+pg.defaults.ssl = true;
+
+pg.connect(process.env.DATABASE_URL, function(err, client) {
+  if (err) throw err;
+  console.log('Connected to postgres! Getting schemas...');
+
+  client
+    .query('SELECT table_schema,table_name FROM information_schema.tables;')
+    .on('row', function(row) {
+      console.log(JSON.stringify(row));
+    });
+});
+
 //===========================================================
 
 app.get('/', function(req, res){
