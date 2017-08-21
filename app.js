@@ -67,11 +67,11 @@
     if (err) throw err;
     console.log('Connected through heroku config db url');
 
-    // client
-    //   .query('SELECT table_schema,table_name FROM information_schema.tables;')
-    //   .on('row', function(row) {
-    //     console.log(JSON.stringify(row));
-    //   });
+    client
+      .query('SELECT table_schema,table_name FROM information_schema.tables;')
+      .on('row', function(row) {
+        console.log(JSON.stringify(row));
+      });
   });
 
   //===========================================================
