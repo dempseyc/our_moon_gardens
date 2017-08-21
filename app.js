@@ -24,8 +24,8 @@
     cookie: { secure: false }
   }))
 
-  // var port = process.env.PORT || 3000;
-  var port = 3000;
+  var port = process.env.PORT || 3000;
+  // var port = 3000;
 
   // EITHER ONE?
   // var db = pgp('postgres://gjtqmpggmgeuzp:a223b0a98427908099bdde72706ea3af2929bd0f3dde6a1282696683a4b47e24@ec2-23-23-227-188.compute-1.amazonaws.com:5432/d1ev8ka848bkce') || pgp('postgres://macbook@localhost:5432/moongarden');
@@ -52,13 +52,21 @@
 
   pg.defaults.ssl = true;
 
-  var pool = new pg.Pool();
+  var pool = new pg.Pool()
 
-  pool.connect(process.env.DATABASE_URL, function(err, client) {
-    if (err) throw err;
-    console.log('connection through heroku db url');
+  // connection using created pool
+  pool.connect(function(err, client, done) {
+    if (err) {
+      console.log('not connecting');
+    }
+    client.query(/* etc, etc */)
+    done();
   });
-  // pool.end();
+
+  // pool shutdown
+    // pool.end()
+
+
   //===========================================================
   // CONNECTION NOT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
