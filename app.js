@@ -58,7 +58,7 @@
     if (err) throw err;
     console.log('connection through heroku db url');
   });
-  pool.end();
+  // pool.end();
   //===========================================================
   // CONNECTION NOT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
