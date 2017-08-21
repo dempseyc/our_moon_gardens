@@ -46,27 +46,27 @@
   //===========================================================
   // CONNECTION
 
-  pg.defaults.ssl = true;
+  // pg.defaults.ssl = true;
 
-  var pool = new pg.Pool()
+  // var pool = new pg.Pool()
 
-  // connection using created pool
-  pool.connect(process.env.DATABASE_URL,function(err, client, done) {
-    if (err) {
-      console.log('not connecting');
-    }
-    client.query('SELECT * FROM users', function(err, result) {
-      done();
-      if(err) {
-        return console.error(err);
-      }
-    console.log(result.rows);
-    });
-    done();
-  });
+  // // connection using created pool
+  // pool.connect(process.env.DATABASE_URL,function(err, client, done) {
+  //   if (err) {
+  //     console.log('not connecting');
+  //   }
+  //   client.query('SELECT * FROM users', function(err, result) {
+  //     done();
+  //     if(err) {
+  //       return console.error(err);
+  //     }
+  //   console.log(result.rows);
+  //   });
+  //   done();
+  // });
 
-  // pool shutdown
-  pool.end()
+  // // pool shutdown
+  // pool.end()
 
 
   //===========================================================
