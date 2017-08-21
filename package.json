@@ -14,8 +14,8 @@
   "keywords": [
     "auth"
   ],
-  "author": "Bryan Mytko",
-  "license": "ISC",
+  "author": "",
+  "license": "",
   "dependencies": {
     "bcrypt": "^0.8.7",
     "body-parser": "^1.15.2",
