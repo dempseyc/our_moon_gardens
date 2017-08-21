@@ -50,29 +50,31 @@
   // CONNECTION
 
 
-  // pg.defaults.ssl = true;
-
-  // var pool = new pg.Pool();
-
-  // pool.connect(process.env.DATABASE_URL, function(err, client) {
-  //   if (err) throw err;
-  //   console.log('connection through heroku db url');
-  // });
-  // pool.end();
-  //===========================================================
-
   pg.defaults.ssl = true;
 
-  pg.connect(process.env.DATABASE_URL, function(err, client) {
-    if (err) throw err;
-    console.log('Connected through heroku config db url');
+  var pool = new pg.Pool();
 
-    // client
-    //   .query('SELECT table_schema,table_name FROM information_schema.tables;')
-    //   .on('row', function(row) {
-    //     console.log(JSON.stringify(row));
-    //   });
+  pool.connect(process.env.DATABASE_URL, function(err, client) {
+    if (err) throw err;
+    console.log('connection through heroku db url');
   });
+  pool.end();
+  //===========================================================
+  // CONNECTION NOT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+  // pg.defaults.ssl = true;
+
+  // pg.connect(process.env.DATABASE_URL, function(err, client) {
+  //   if (err) throw err;
+  //   console.log('Connected through heroku config db url');
+
+  //   // client
+  //   //   .query('SELECT table_schema,table_name FROM information_schema.tables;')
+  //   //   .on('row', function(row) {
+  //   //     console.log(JSON.stringify(row));
+  //   //   });
+  // });
 
   //===========================================================
 
