@@ -97,6 +97,11 @@
         "handle": user.handle
       };
       console.log("user session up");
+      db
+        .one("SELECT * FROM gardens WHERE id = $1", [user.garden_id])
+        .then(function(garden){
+          data.garden_name = garden.garden_name;
+        });
       res.render('index', data);
     } else {
       console.log("user session not up");
