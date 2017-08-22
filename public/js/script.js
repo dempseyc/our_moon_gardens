@@ -201,7 +201,7 @@ TheForm.submit(function(event){
 function callGiphyAPI (searchterm,offset) {
   offset *= 9;
   let key = "dc6zaTOxFJmzC";
-  let URL = "http://api.giphy.com/v1/stickers/search?q="+searchterm+"&offset="+offset+"&api_key="+key;
+  let URL = "https://api.giphy.com/v1/stickers/search?q="+searchterm+"&offset="+offset+"&api_key="+key;
      $.ajax(URL, {  //howcome this syntax works for me and no other does?
       success: function(json) {
         console.log(json); //json is an array  also json.data is an array
