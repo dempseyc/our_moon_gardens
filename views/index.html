@@ -14,7 +14,7 @@
         {{#logged_in}}
         <div class= "garden-icon">
           <div class= "garden-name">
-            <a href= "../garden/{{garden_id}}">{{handle}}'s Moon Garden..{{garden_name}}</a>
+            <a href= "../garden/{{garden_id}}">{{username}}'s Moon Garden..{{garden_name}}</a>
           </div>
           <div class= "garden-thumbnail">
             <a href= "../garden/{{garden_id}}">GARDEN ICON HERE</a>
@@ -28,13 +28,11 @@
         <div class="form">
             <form action="/login" method="post">
               <fieldset>
-                <form>
                   <label for="inputEmail">Email</label>
                     <input name="email" type="text" id="inputEmail" placeholder="Email">
                   <label for="inputPassword">Password</label>
                     <input name="password" type="password" id="inputPassword" placeholder="Password">
                     <button type="submit">Login</button>
-                </form>
               </fieldset>
             </form>
 

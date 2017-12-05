@@ -7,25 +7,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
-    <div class= "main-container">
+    <div class="main-container">
         <div id="logo">
         </div>
         {{^logged_in}}
-        <div class= "form">
-          <form action= "/signup" method= "post">
+        <div class="form">
+          <form action="/signup" method="post">
             <fieldset>
-              <legend>New User</legend>
-              <form>
-                <label for= "inputEmail">Email</label>
-                  <input name= "email" type= "text" id= "inputEmail" placeholder= "Email">
-                <label for= "inputHandle">Handle</label>
-                  <input name= "handle" type= "text" id= "inputHandle" placeholder= "Handle">
-                <label for= "inputPassword">Password</label>
-                  <input name= "password" type= "password" id= "inputPassword" placeholder= "password">
-                <label for= "nameGarden">Garden Name</label>
-                  <input name= "garden_name" type= "text" id= "inputGardenName" placeholder= "MyMoonGaardenOne">
-                <button type= "submit">Sign Up</button>
-              </form>
+              <label for="email">Email</label>
+                <input name="email" type="text" id="email-input" placeholder="my email">
+              <label for="username">User Name</label>
+                <input name="username" type="text" id="username-input" placeholder="my username">
+              <label for="password">Password</label>
+                <input name="password" type="password" id="password-input" placeholder="my password">
+              <label for="garden">Garden Name</label>
+                <input name="gardenname" type="text" id="garden-name-input" placeholder="My Moon Gaarden">
+              <button type="submit">Sign Up</button>
             </fieldset>
           </form>
         </div>
@@ -33,8 +30,8 @@
 
         <!-- already logged in -->
         {{#logged_in}}
-        <p>You are already logged in, {{handle}}..</p>
-        <a href= "/garden/{{garden_id}}">{{handle}}'s Garden</a>
+        <p>You are already logged in, {{username}}..</p>
+        <a href="/garden/{{garden_id}}">{{username}}'s Garden</a>
         {{/logged_in}}
 
     </div>

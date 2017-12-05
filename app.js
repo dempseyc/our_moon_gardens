@@ -24,69 +24,17 @@
     cookie: { secure: false }
   }))
 
-  var port = process.env.PORT || 8080;
-  // var port = 8080;
+  var port = process.env.PORT || 3000;
 
-  //===========================================================
-  //===========================================================
   //===========================================================
   //===========================================================
   // ENVIRONMENTS
 
-
   // LOCAL_URL
-  // var db = pgp('postgres://macbook@localhost:5432/moongarden');
-
-  //HEROKU_POSTGRESQL_CRIMSON_URL
-  // var db = pgp('postgres://gjtqmpggmgeuzp:a223b0a98427908099bdde72706ea3af2929bd0f3dde6a1282696683a4b47e24@ec2-23-23-227-188.compute-1.amazonaws.com:5432/d1ev8ka848bkce');
+  var db = pgp('postgres://macbook@localhost:5432/moongarden');
 
   // DATABASE_URL
-  var db = pgp('postgres://psswjeyveowiia:29981eb212d09990615f90fffdb394cecb2245cb500526f1a35aa9ac66057d20@ec2-54-163-237-25.compute-1.amazonaws.com:5432/d379c3686sgv6s');
-
-  //===========================================================
-  // CONNECTION
-
-  // pg.defaults.ssl = true;
-
-  // var pool = new pg.Pool()
-
-  // // connection using created pool
-  // pool.connect(process.env.DATABASE_URL,function(err, client, done) {
-  //   if (err) {
-  //     console.log('not connecting');
-  //   }
-  //   client.query('SELECT * FROM users', function(err, result) {
-  //     done();
-  //     if(err) {
-  //       return console.error(err);
-  //     }
-  //   console.log(result.rows);
-  //   });
-  //   done();
-  // });
-
-  // // pool shutdown
-  // pool.end()
-
-
-  //===========================================================
-  // CONNECTION NOT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-  // pg.defaults.ssl = true;
-
-  // pg.connect(process.env.DATABASE_URL, function(err, client) {
-  //   if (err) throw err;
-  //   console.log('Connected through heroku config db url');
-
-  //   // client
-  //   //   .query('SELECT table_schema,table_name FROM information_schema.tables;')
-  //   //   .on('row', function(row) {
-  //   //     console.log(JSON.stringify(row));
-  //   //   });
-  // });
-
-  //===========================================================
+  // var db = pgp('postgres://psswjeyveowiia:29981eb212d09990615f90fffdb394cecb2245cb500526f1a35aa9ac66057d20@ec2-54-163-237-25.compute-1.amazonaws.com:5432/d379c3686sgv6s');
 
   app.get('/', function(req, res){
     let user = req.session.user;
@@ -94,7 +42,7 @@
       let data = {
         "logged_in": true,
         "garden_id": user.garden_id,
-        "handle": user.handle
+        "username": user.username
       };
       console.log("user session up");
       db
@@ -134,7 +82,6 @@
     res.render('signup/index');
   });
 
-
   app.post('/signup', function(req, res){
     let newGarden = "{}";
     let birthday = 0;
@@ -143,7 +90,7 @@
     // let gard_id;
 
     db
-      .one("INSERT INTO gardens (garden_name, garden_owner, contents, birthday)   VALUES($1,$2,$3,$4) returning *", [bod.garden_name, bod.handle, newGarden, birthday])
+      .one("INSERT INTO gardens (garden_name, garden_owner, contents, birthday)   VALUES($1,$2,$3,$4) returning *", [bod.gardenname, bod.username, newGarden, birthday])
       .catch(function(e){
           res.send('Failed to create garden: ' + e);
         })
@@ -152,7 +99,7 @@
         bcrypt
           .hash(bod.password, 10, function(err, hash){
             db
-            .one("INSERT INTO users (email, password_digest, handle, garden_id) VALUES ($1, $2, $3, $4) returning *", [bod.email, hash, bod.handle, data.id])
+            .one("INSERT INTO users (email, password_digest, username, garden_id) VALUES ($1, $2, $3, $4) returning *", [bod.email, hash, bod.username, data.id])
             .catch(function(e){
                 res.send('Failed to create user: ' + e);
             })
@@ -189,7 +136,7 @@
       .then(function(data){
         if(user){
           console.log(data);
-          data.handle = req.session.user.handle;
+          data.username = req.session.user.username;
           res.render('garden/show', data);
         } else {
           res.render('index');
@@ -216,20 +163,13 @@
   });
 
   app.listen(port, function () {
-    console.log('Server on port by heroku.');
+    console.log(`server listening on port ${port}!`);
   });
 
-  /////////////////////////////////////////////////////////////
-  // //post is when you want your server to receive the data submitted from a form:
-  // <form method="post" action="/shoebill">
-  //     <input type="text" name="coders"/>
-  //     <input type="submit"/>
-  // </form>
-  // app.post("/shoebill",function(request,response){
-  //     let string = req.body;
-  // }
-  // //generally:
-  // //store all html files in a folder called 'views'
-  // //store all client side javascript and css in a folder called 'public'
-  // //store all sql files in a folder called model
-  // //store all server side js files in a folder called controller
+  //////////////////////////////////////////////////////////////////////////
+  // // is this stuff true?
+  // // generally:
+  // // store all html files in a folder called 'views'
+  // // store all client side javascript and css in a folder called 'public'
+  // // store all sql files in a folder called model
+  // // store all server side js files in a folder called controller
