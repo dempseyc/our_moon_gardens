@@ -30,11 +30,19 @@
 
         <!-- already logged in -->
         {{#logged_in}}
-        <p>You are already logged in, {{username}}..</p>
-        <a href="/garden/{{garden_id}}">{{username}}'s Garden</a>
+        <div>
+          <p>You are logged in, {{username}}..</p>
+        </div>
+        <div>
+          <a href="/garden/{{garden_id}}">{{username}}'s Garden</a>
+          <a href="#">Other Gardens</a>
+        </div>
         {{/logged_in}}
 
-    </div>
+        <div class="footer"><img src="images/PoweredBy_200_Horizontal_Light-Backgrounds_With_Logo.gif" /></div>
+        
+
+    </div> <!-- main-container -->
   </body>
 </html>
 

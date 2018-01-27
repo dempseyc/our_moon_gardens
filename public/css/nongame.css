@@ -18,6 +18,21 @@ html, body{
   padding-bottom: 4rem;
 }
 
+.garden-icon {
+  width: 25vw;
+  margin: auto;
+}
+
+.garden-name {
+  /* width: 100%; */
+  text-align: center;
+}
+
+.garden-thumbnail img{
+  width: 90%;
+  margin: auto;
+}
+
 a {
   color: #AAF;
 }

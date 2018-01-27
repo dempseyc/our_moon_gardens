@@ -13,12 +13,14 @@
         <!-- logged in -->
         {{#logged_in}}
         <div class= "garden-icon">
+          <a href= "../garden/{{garden_id}}">
           <div class= "garden-name">
-            <a href= "../garden/{{garden_id}}">{{username}}'s Moon Garden..{{garden_name}}</a>
+            {{username}}'s Moon Garden..{{garden_name}}
           </div>
           <div class= "garden-thumbnail">
-            <a href= "../garden/{{garden_id}}">GARDEN ICON HERE</a>
+            <img src="images/omggardenicon.png" />
           </div>
+          </a>
         </div>
         {{/logged_in}}
         <!-- logged in -->
@@ -40,21 +42,7 @@
         </div>
         {{/logged_in}}
         <!-- not logged in -->
-
-    </div> <!-- /top-container -->
+        <div class="footer"><img src="images/PoweredBy_200_Horizontal_Light-Backgrounds_With_Logo.gif" /></div>
+    </div> <!-- main-container -->
   </body>
 </html>
-<!-- update user form on another page? -->
-
-<!--           <form class="form-horizontal" action="/user?_method=PUT" method="post">
-            <fieldset>
-              <legend>Update User</legend>
-              <div class="form-group">
-                <label for="userEmail" class="col-lg-2 control-label">Email</label>
-                <div class="col-lg-10">
-                  <input name="email" type="text" class="form-control" id="userEmail" value="{{email}}">
-                </div>
-                <input type="submit" />
-              </div>
-            </fieldset>
-          </form> -->
