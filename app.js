@@ -31,10 +31,10 @@
   // ENVIRONMENTS
 
   // LOCAL_URL
-  var db = pgp('postgres://macbook@localhost:5432/moongarden');
+  // var db = pgp('postgres://macbook@localhost:5432/moongarden');
 
   // DATABASE_URL
-  // var db = pgp('postgres://psswjeyveowiia:29981eb212d09990615f90fffdb394cecb2245cb500526f1a35aa9ac66057d20@ec2-54-163-237-25.compute-1.amazonaws.com:5432/d379c3686sgv6s');
+  var db = pgp('postgres://psswjeyveowiia:29981eb212d09990615f90fffdb394cecb2245cb500526f1a35aa9ac66057d20@ec2-54-163-237-25.compute-1.amazonaws.com:5432/d379c3686sgv6s');
 
   app.get('/', function(req, res){
     let user = req.session.user;
