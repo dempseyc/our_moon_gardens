@@ -42,7 +42,7 @@
       let data = {
         "logged_in": true,
         "garden_id": user.garden_id,
-        "username": user.username
+        "username": user.handle
       };
       console.log("user session up");
       db
