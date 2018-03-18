@@ -13,7 +13,7 @@ CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   email VARCHAR(50) UNIQUE,
   password_digest VARCHAR(255),
-  username VARCHAR(50),
+  handle VARCHAR(50),
   garden_id INTEGER REFERENCES gardens(id)
 );
 

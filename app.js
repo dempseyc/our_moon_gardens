@@ -99,7 +99,7 @@
         bcrypt
           .hash(bod.password, 10, function(err, hash){
             db
-            .one("INSERT INTO users (email, password_digest, username, garden_id) VALUES ($1, $2, $3, $4) returning *", [bod.email, hash, bod.username, data.id])
+            .one("INSERT INTO users (email, password_digest, handle, garden_id) VALUES ($1, $2, $3, $4) returning *", [bod.email, hash, bod.username, data.id])
             .catch(function(e){
                 res.send('Failed to create user: ' + e);
             })
